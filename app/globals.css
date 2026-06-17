@@ -1,0 +1,375 @@
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@700,900&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+/* DayBricks theme v2 — funky multi-font (recompile touch) */
+
+@theme inline {
+  --font-display: var(--font-display-black), 'Arial Black', sans-serif;
+  --font-grotesk: var(--font-grotesk), 'Space Grotesk Fallback';
+  --font-marker: var(--font-marker), 'Comic Sans MS', cursive;
+  --font-script: var(--font-script), 'Comic Sans MS', cursive;
+  --font-sans: var(--font-sans-inter), 'Inter Fallback';
+  --font-mono: var(--font-mono-space), 'Space Mono Fallback';
+  --font-pixel: var(--font-pixel), 'Courier New', monospace;
+  --font-pixel-alt: var(--font-pixel-alt), 'Courier New', monospace;
+  --font-clash: var(--font-clash);
+  --font-boska: var(--font-boska);
+  --font-satoshi: 'Satoshi', sans-serif;
+
+  /* DayBricks named palette — "Matte Plastic Modular" */
+  --color-ink: #0a1413;
+  --color-surface: #122724;
+  --color-surface-2: #163230;
+  --color-cream: #fdfbf7;
+  --color-beige: #d2c4bd;
+  --color-teal: #12a798;
+  --color-teal-bright: #1ad0bd;
+  --color-peach: #e89b68;
+  --color-peach-soft: #f0b78c;
+  --color-yellow: #f2e94e;
+  --color-neon: #eaff00;
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.55);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  --animate-marquee: marquee 32s linear infinite;
+  --animate-marquee-rev: marquee-rev 36s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+}
+
+:root {
+  color-scheme: dark;
+  --radius: 1.1rem;
+
+  --background: #0e1b19; /* Deep Teal anchor */
+  --foreground: #d2c4bd; /* Muted beige */
+  --card: #122724;
+  --card-foreground: #d2c4bd;
+  --popover: #122724;
+  --popover-foreground: #d2c4bd;
+  --primary: #12a798; /* Vibrant Teal action */
+  --primary-foreground: #06110f;
+  --secondary: #163230;
+  --secondary-foreground: #d2c4bd;
+  --muted: #163230;
+  --muted-foreground: #8aa19c;
+  --accent: #e89b68; /* Warm peach */
+  --accent-foreground: #1a0f07;
+  --destructive: #e2674f;
+  --border: rgba(210, 196, 189, 0.12);
+  --input: rgba(210, 196, 189, 0.14);
+  --ring: #12a798;
+
+  --sidebar: #0e1b19;
+  --sidebar-foreground: #d2c4bd;
+  --sidebar-primary: #12a798;
+  --sidebar-primary-foreground: #06110f;
+  --sidebar-accent: #163230;
+  --sidebar-accent-foreground: #d2c4bd;
+  --sidebar-border: rgba(210, 196, 189, 0.12);
+  --sidebar-ring: #12a798;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes marquee-rev {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+@keyframes grid-pan {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 44px 44px;
+  }
+}
+@keyframes buzz {
+  0%,
+  100% {
+    transform: rotate(0) scale(1);
+  }
+  15% {
+    transform: rotate(-8deg) scale(1.08);
+  }
+  30% {
+    transform: rotate(7deg) scale(1.08);
+  }
+  45% {
+    transform: rotate(-6deg) scale(1.06);
+  }
+  60% {
+    transform: rotate(5deg) scale(1.05);
+  }
+  75% {
+    transform: rotate(-3deg) scale(1.03);
+  }
+}
+.brick-buzz {
+  display: block;
+  cursor: pointer;
+  transition: transform 200ms ease;
+  transform-origin: center 70%;
+  will-change: transform;
+}
+.brick-buzz:hover {
+  animation: buzz 500ms ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .brick-buzz:hover {
+    animation: none;
+    transform: scale(1.05);
+  }
+}
+@keyframes brick-pop {
+  0% {
+    transform: translateY(14px) scale(0.92) rotate(-4deg);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-4px) scale(1.03) rotate(1deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+@keyframes sheen {
+  from {
+    transform: translateX(-120%) skewX(-12deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-12deg);
+  }
+}
+@keyframes grow {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    cursor: url('/brand/cursor.svg') 16 16, auto;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  ::selection {
+    background: var(--color-teal);
+    color: #06110f;
+  }
+}
+
+@layer utilities {
+  /* matte plastic depth: no harsh drop shadows — inner light + soft colored glow */
+  .matte {
+    box-shadow:
+      inset 0 1px 0 rgba(253, 251, 247, 0.06),
+      inset 0 -2px 5px rgba(0, 0, 0, 0.35);
+  }
+  .matte-glow-teal {
+    box-shadow:
+      inset 0 1px 0 rgba(253, 251, 247, 0.08),
+      0 22px 50px -22px rgba(18, 167, 152, 0.6);
+  }
+  .matte-glow-peach {
+    box-shadow:
+      inset 0 1px 0 rgba(253, 251, 247, 0.08),
+      0 22px 50px -22px rgba(232, 155, 104, 0.6);
+  }
+  .spring {
+    transition:
+      transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.4s ease;
+  }
+  .press:active {
+    transform: scale(0.95);
+  }
+  .text-gradient {
+    background: linear-gradient(96deg, #1ad0bd 0%, #12a798 36%, #e89b68 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .grid-dots {
+    background-image: radial-gradient(
+      rgba(210, 196, 189, 0.08) 1px,
+      transparent 1px
+    );
+    background-size: 24px 24px;
+  }
+  /* animated, slowly-panning dotted grid for hero depth */
+  .grid-dots-anim {
+    background-image: radial-gradient(
+      rgba(210, 196, 189, 0.1) 1px,
+      transparent 1px
+    );
+    background-size: 44px 44px;
+    animation: grid-pan 24s linear infinite;
+  }
+  /* 3D tilt surface — pairs with the mouse-driven --rx / --ry vars */
+  .tilt-3d {
+    transform: perspective(1200px) rotateX(var(--rx, 0deg))
+      rotateY(var(--ry, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+  }
+  .brick-pop {
+    animation: brick-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  /* glossy sheen swipe used on interactive panels */
+  .sheen {
+    position: relative;
+    overflow: hidden;
+  }
+  .sheen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      transparent 40%,
+      rgba(253, 251, 247, 0.16) 50%,
+      transparent 60%
+    );
+    transform: translateX(-120%) skewX(-12deg);
+    pointer-events: none;
+  }
+  .sheen:hover::after {
+    animation: sheen 0.9s ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .grid-dots-anim,
+    .brick-pop {
+      animation: none;
+    }
+    .tilt-3d {
+      transform: none;
+    }
+  }
+  /* Pixelated neon-yellow marquee text — flashy but kept premium with a hard
+     pixel-shadow for "stamped" depth plus a soft glow halo. */
+  .text-neon {
+    color: var(--color-neon);
+    text-shadow:
+      0 0 1px rgba(234, 255, 0, 0.9),
+      0 0 10px rgba(234, 255, 0, 0.55),
+      0 0 26px rgba(234, 255, 0, 0.35);
+  }
+  .text-pixel-stamp {
+    color: var(--color-neon);
+    text-shadow:
+      2px 2px 0 #0a1413,
+      4px 4px 0 rgba(10, 20, 19, 0.6),
+      0 0 12px rgba(234, 255, 0, 0.45);
+  }
+  .text-neon-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--color-neon);
+    text-shadow: 0 0 14px rgba(234, 255, 0, 0.45);
+  }
+  /* tight scanline texture so the dark bar reads as a tactile, embedded panel */
+  .scanlines {
+    background-image: repeating-linear-gradient(
+      0deg,
+      rgba(234, 255, 0, 0.05) 0px,
+      rgba(234, 255, 0, 0.05) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  }
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 7%,
+      #000 93%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 7%,
+      #000 93%,
+      transparent
+    );
+  }
+}
+
+/* Skip intro rule injected by layout.tsx script to prevent FOUC on returning visits */
+html.skip-intro #intro-gate {
+  display: none !important;
+}
+
+/* (Old Cinematic intro CSS removed, replaced by Framer Motion in components/daybricks/intro-overlay.tsx) */
+.hero-cta {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.hero-cta:hover {
+  transform: translateY(-4px);
+}

@@ -1,0 +1,6 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DayBricks app icon">
+  <rect width="512" height="512" rx="114" fill="#12A798"/>
+  <path d="M152 196c64 0 48 96 104 96s40-96 104-96" stroke="#FDFBF7" stroke-width="26" stroke-linecap="round" stroke-dasharray="2 56" fill="none"/>
+  <circle cx="152" cy="196" r="40" fill="#E89B68"/>
+  <circle cx="360" cy="356" r="40" fill="#FDFBF7"/>
+</svg>
