@@ -14,9 +14,11 @@ const rewards = [
   { emoji: '🎁', title: 'Exclusive Feature Testing Access' },
 ]
 
+import { subscribeToWaitlist } from '@/app/actions/waitlist'
+
 export function Waitlist() {
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'done' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
   const [count, setCount] = useState(0)
   const containerRef = useRef(null)
   const isInView = useInView(containerRef, { once: true, amount: 0.2 })
@@ -26,16 +28,26 @@ export function Waitlist() {
     // The tracker will remain at its current state until the real backend is hooked up.
   }, [isInView])
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
     if (!ok) {
       setStatus('error')
       return
     }
-    setStatus('done')
-    // When the user themselves signs up, immediately increment the counter
-    setCount(prev => Math.min(100, prev + 1))
+    
+    setStatus('loading')
+    
+    // Call the Resend Server Action
+    const result = await subscribeToWaitlist(email)
+    
+    if (result.success) {
+      setStatus('done')
+      // When the user themselves signs up, immediately increment the counter
+      setCount(prev => Math.min(100, prev + 1))
+    } else {
+      setStatus('error')
+    }
   }
 
   return (
@@ -143,10 +155,15 @@ export function Waitlist() {
                 />
                 <button
                   type="submit"
-                  className="spring inline-flex h-14 items-center justify-center gap-2 rounded-2xl px-7 font-bold text-white shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all"
+                  disabled={status === 'loading'}
+                  className="spring inline-flex h-14 items-center justify-center gap-2 rounded-2xl px-7 font-bold text-white shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all disabled:opacity-70 disabled:hover:translate-y-0"
                   style={{ background: '#12A798' }}
                 >
-                  Get notified <ArrowRight className="size-4" />
+                  {status === 'loading' ? (
+                    'Sending...'
+                  ) : (
+                    <>Get notified <ArrowRight className="size-4" /></>
+                  )}
                 </button>
               </form>
               
