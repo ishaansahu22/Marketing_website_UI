@@ -1,12 +1,17 @@
 'use server'
 
 import { Resend } from 'resend'
+import { headers } from 'next/headers'
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function subscribeToWaitlist(email: string) {
   let sheetSaved = false
   let emailSent = false
+
+  // Fetch the user's IP Address
+  const headersList = await headers()
+  const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'Unknown IP'
 
   // 1. Always save to Google Sheet first
   const sheetWebhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbxZuHuuiyHU22s-TOa2ZjiviYEFimOlEmbiqhkMG3EIHzcf27PoUiHgMF2LQPvqs__0/exec';
@@ -21,7 +26,8 @@ export async function subscribeToWaitlist(email: string) {
       headers: {
         'Content-Type': 'text/plain',
       },
-      body: JSON.stringify({ email, date: new Date().toISOString() }),
+      // Pass the IP address along with email and date
+      body: JSON.stringify({ email, date: new Date().toISOString(), ip }),
       redirect: 'follow',
     })
 
