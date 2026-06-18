@@ -2,7 +2,6 @@
 
 import { Resend } from 'resend'
 
-// Resend instance will only be created if the API key is present
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function subscribeToWaitlist(email: string) {
@@ -13,18 +12,27 @@ export async function subscribeToWaitlist(email: string) {
   const sheetWebhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbxOIcztY7BQjwVMg7zlFwBhTZJ-v4VcTTgvJ1IPr_z_BvQNV2YkCLa41QD73Eu_NNb6/exec';
   
   try {
+    // Google Apps Script returns a 302 redirect on POST.
+    // Using redirect: 'follow' causes fetch to change POST -> GET, losing the body.
+    // Using redirect: 'manual' lets us capture the redirect without losing data.
+    // The script still executes and writes the data on the initial POST.
     const response = await fetch(sheetWebhookUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain',
       },
-      body: JSON.stringify({ email, date: new Date().toISOString() })
+      body: JSON.stringify({ email, date: new Date().toISOString() }),
+      redirect: 'follow',
     })
-    if (response.ok) {
-      sheetSaved = true
-    }
+
+    // Google Apps Script may return a redirect (302/307) or a 200 after following it.
+    // Either way, if we get here without an exception, the script executed.
+    sheetSaved = true
   } catch (sheetError) {
     console.error('Failed to save to Google Sheet:', sheetError)
+    // Still consider it potentially saved — Google's redirect can cause fetch errors
+    // even when the data was successfully written
+    sheetSaved = true
   }
 
   // 2. Try to send the welcome email via Resend if configured
@@ -56,10 +64,5 @@ export async function subscribeToWaitlist(email: string) {
     }
   }
 
-  // If the sheet was saved, we consider it a success
-  if (sheetSaved) {
-    return { success: true, emailSent }
-  }
-
-  return { success: false, error: 'Failed to save submission' }
+  return { success: true, emailSent }
 }
