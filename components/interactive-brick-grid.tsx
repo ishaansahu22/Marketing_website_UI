@@ -1,20 +1,20 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 
 export function InteractiveBrickGrid() {
   const [mounted, setMounted] = useState(false)
   const [cols, setCols] = useState(0)
   const [rows, setRows] = useState(0)
+  const [activeBricks, setActiveBricks] = useState<Set<number>>(new Set())
+  const gridRef = useRef<HTMLDivElement>(null)
+  const isTouching = useRef(false)
 
   useEffect(() => {
     setMounted(true)
-    // Calculate how many bricks fit on the screen
     const updateGrid = () => {
-      // Brick is 40px + 8px gap = 48px
       const brickSize = 48
       const width = window.innerWidth
-      // Let's cap the height to roughly 400px so it's a nice horizontal block
       const height = Math.min(window.innerHeight * 0.4, 400)
       
       setCols(Math.floor(width / brickSize))
@@ -25,6 +25,59 @@ export function InteractiveBrickGrid() {
     window.addEventListener('resize', updateGrid)
     return () => window.removeEventListener('resize', updateGrid)
   }, [])
+
+  // Get the brick index from a touch/mouse coordinate
+  const getBrickIndexFromPoint = useCallback((clientX: number, clientY: number): number | null => {
+    const el = document.elementFromPoint(clientX, clientY)
+    if (el && el.classList.contains('paint-brick')) {
+      const index = el.getAttribute('data-index')
+      return index !== null ? parseInt(index) : null
+    }
+    return null
+  }, [])
+
+  // Activate a brick by index
+  const activateBrick = useCallback((index: number) => {
+    setActiveBricks(prev => {
+      if (prev.has(index)) return prev
+      const next = new Set(prev)
+      next.add(index)
+      // Auto-fade: remove after 1.8s
+      setTimeout(() => {
+        setActiveBricks(current => {
+          const updated = new Set(current)
+          updated.delete(index)
+          return updated
+        })
+      }, 1800)
+      return next
+    })
+  }, [])
+
+  // Touch handlers for mobile swipe painting
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    isTouching.current = true
+    const touch = e.touches[0]
+    const index = getBrickIndexFromPoint(touch.clientX, touch.clientY)
+    if (index !== null) activateBrick(index)
+  }, [getBrickIndexFromPoint, activateBrick])
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    e.preventDefault() // Prevent scrolling while painting
+    if (!isTouching.current) return
+    const touch = e.touches[0]
+    const index = getBrickIndexFromPoint(touch.clientX, touch.clientY)
+    if (index !== null) activateBrick(index)
+  }, [getBrickIndexFromPoint, activateBrick])
+
+  const handleTouchEnd = useCallback(() => {
+    isTouching.current = false
+  }, [])
+
+  // Mouse handler for desktop hover painting
+  const handleMouseEnter = useCallback((index: number) => {
+    activateBrick(index)
+  }, [activateBrick])
 
   if (!mounted) return <div className="h-[400px] w-full" /> // Placeholder
 
@@ -40,11 +93,20 @@ export function InteractiveBrickGrid() {
       </p>
 
       <div 
+        ref={gridRef}
         className="flex flex-wrap justify-center gap-2 relative z-0"
-        style={{ width: `${cols * 48}px` }}
+        style={{ width: `${cols * 48}px`, touchAction: 'none' }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {Array.from({ length: totalBricks }).map((_, i) => (
-          <div key={i} className="paint-brick" />
+          <div 
+            key={i} 
+            data-index={i}
+            className={`paint-brick ${activeBricks.has(i) ? 'paint-brick--active' : ''}`}
+            onMouseEnter={() => handleMouseEnter(i)}
+          />
         ))}
       </div>
 
@@ -72,7 +134,9 @@ export function InteractiveBrickGrid() {
           transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .paint-brick:hover {
+        /* Desktop hover */
+        .paint-brick:hover,
+        .paint-brick--active {
           background-color: #59C749;
           border-color: #59C749;
           transition: all 0s;
@@ -81,7 +145,8 @@ export function InteractiveBrickGrid() {
           box-shadow: 0 8px 16px -4px rgba(89, 199, 73, 0.5);
         }
 
-        .paint-brick:hover::after {
+        .paint-brick:hover::after,
+        .paint-brick--active::after {
           background-color: #47A83A;
           border-color: #47A83A;
           transition: all 0s;
