@@ -18,8 +18,11 @@ export async function subscribeToWaitlist(email: string) {
   
   try {
     const now = new Date()
-    const date = now.toISOString().split('T')[0]
-    const time = now.toISOString().split('T')[1].split('.')[0] + ' UTC'
+    // Convert to IST (UTC+5:30)
+    const istOffset = 5.5 * 60 * 60 * 1000
+    const ist = new Date(now.getTime() + istOffset)
+    const date = ist.toISOString().split('T')[0]
+    const time = ist.toISOString().split('T')[1].split('.')[0] + ' IST'
 
     // Google Apps Script returns a 302 redirect on POST.
     // Using redirect: 'follow' causes fetch to change POST -> GET, losing the body.
