@@ -17,6 +17,10 @@ export async function subscribeToWaitlist(email: string) {
   const sheetWebhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbxZuHuuiyHU22s-TOa2ZjiviYEFimOlEmbiqhkMG3EIHzcf27PoUiHgMF2LQPvqs__0/exec';
   
   try {
+    const now = new Date()
+    const date = now.toISOString().split('T')[0]
+    const time = now.toISOString().split('T')[1].split('.')[0] + ' UTC'
+
     // Google Apps Script returns a 302 redirect on POST.
     // Using redirect: 'follow' causes fetch to change POST -> GET, losing the body.
     // Using redirect: 'manual' lets us capture the redirect without losing data.
@@ -26,8 +30,8 @@ export async function subscribeToWaitlist(email: string) {
       headers: {
         'Content-Type': 'text/plain',
       },
-      // Pass the IP address along with email and date
-      body: JSON.stringify({ email, date: new Date().toISOString(), ip }),
+      // Pass the separated date and time along with email and ip
+      body: JSON.stringify({ email, date, time, ip }),
       redirect: 'follow',
     })
 
