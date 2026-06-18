@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Check, ArrowRight, PartyPopper } from 'lucide-react'
+import { Check, ArrowRight } from 'lucide-react'
 import { Brick } from '@/components/daybricks/brick'
 import { PlayBadge } from '@/components/daybricks/play-badge'
 import { Reveal } from '@/components/reveal'
@@ -14,23 +14,19 @@ const rewards = [
   { emoji: '🎁', title: 'Exclusive Feature Testing Access' },
 ]
 
-import { subscribeToWaitlist, getWaitlistCount } from '@/app/actions/waitlist'
+import { subscribeToWaitlist } from '@/app/actions/waitlist'
 
 export function Waitlist() {
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error' | 'already_submitted'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
   const [count, setCount] = useState(0)
-  const [allSlotsClaimed, setAllSlotsClaimed] = useState(false)
   const containerRef = useRef(null)
   const isInView = useInView(containerRef, { once: true, amount: 0.2 })
 
-  // Fetch real count from Google Sheets on mount
   useEffect(() => {
-    getWaitlistCount().then((c) => {
-      setCount(c)
-      if (c >= 100) setAllSlotsClaimed(true)
-    }).catch(() => {})
-  }, [])
+    // The live simulation has been disabled.
+    // The tracker will remain at its current state until the real backend is hooked up.
+  }, [isInView])
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -39,41 +35,18 @@ export function Waitlist() {
       setStatus('error')
       return
     }
-
-    // Check if they already submitted this exact email on this device
-    try {
-      const prevSubmitted = localStorage.getItem('waitlist_email')
-      if (prevSubmitted === email) {
-        setStatus('already_submitted')
-        return
-      }
-    } catch {
-      // localStorage might not be available
-    }
     
     setStatus('loading')
     
-    try {
-      // Call the Server Action
-      const result = await subscribeToWaitlist(email)
-      
-      if (result.success) {
-        setStatus('done')
-        try { localStorage.setItem('waitlist_email', email) } catch {}
-        if (result.count !== undefined) {
-          setCount(result.count)
-          if (result.count >= 100) setAllSlotsClaimed(true)
-        } else {
-          setCount(prev => Math.min(100, prev + 1))
-        }
-      } else {
-        setStatus('error')
-      }
-    } catch {
-      // If the server action fails, still show success since data may have been saved
+    // Call the Resend Server Action
+    const result = await subscribeToWaitlist(email)
+    
+    if (result.success) {
       setStatus('done')
-      try { localStorage.setItem('waitlist_email', email) } catch {}
+      // When the user themselves signs up, immediately increment the counter
       setCount(prev => Math.min(100, prev + 1))
+    } else {
+      setStatus('error')
     }
   }
 
@@ -125,40 +98,35 @@ export function Waitlist() {
                 Early Access Progress
               </span>
               <span className="font-mono text-sm font-bold" style={{ color: '#0a1413' }}>
-                {allSlotsClaimed ? '100+ Spots Claimed 🎉' : `${count} Spots Claimed`}
+                {count} Spots Claimed
               </span>
             </div>
             <div className="relative h-4 w-full overflow-hidden rounded-full bg-black/5 shadow-inner border border-black/5">
               <motion.div
                 initial={{ width: '0%' }}
-                animate={{ width: `${Math.min(count, 100)}%` }}
+                animate={{ width: `${count}%` }}
                 transition={{ duration: 1, ease: 'easeOut' }}
                 className="relative h-full rounded-full"
-                style={{ background: allSlotsClaimed 
-                  ? 'linear-gradient(90deg, #E89B68, #e2674f)' 
-                  : 'linear-gradient(90deg, #12A798, #1ad0bd)' 
-                }}
+                style={{ background: 'linear-gradient(90deg, #12A798, #1ad0bd)' }}
               >
                 <div className="absolute right-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
               </motion.div>
             </div>
             <p className="mt-3 text-sm" style={{ color: 'rgba(20, 40, 20, 0.5)' }}>
-              {allSlotsClaimed 
-                ? 'All founding spots are taken! But you can still join — you\'ll get an email at our official launch.' 
-                : 'Join the first explorers helping shape DayBricks.'}
+              Join the first explorers helping shape DayBricks.
             </p>
           </div>
 
-          {status === 'done' || status === 'already_submitted' ? (
+          {status === 'done' ? (
             <div className="mx-auto mt-10 flex max-w-md flex-col items-center gap-3">
               <span className="inline-flex size-14 items-center justify-center rounded-2xl text-white shadow-lg" style={{ background: '#12A798' }}>
                 <Check className="size-7" />
               </span>
               <p className="text-xl font-bold" style={{ fontFamily: 'var(--font-clash)', color: '#0a1413' }}>
-                {status === 'already_submitted' ? "You're already on the list!" : "You're on the list!"}
+                You’re on the list!
               </p>
               <p className="text-sm" style={{ color: 'rgba(20, 40, 20, 0.65)' }}>
-                We'll email <span className="font-semibold text-[#0a1413]">{email}</span> at
+                We’ll email <span className="font-semibold text-[#0a1413]">{email}</span> at
                 launch.
               </p>
             </div>

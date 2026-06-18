@@ -62,7 +62,7 @@ export function Hero() {
             
             {/* String Wrapper (Behind Text, z-20) */}
             <div 
-              className="absolute left-[81%] top-[55%] md:top-[50%] z-20 pointer-events-none"
+              className="absolute left-[81%] top-[35%] sm:top-[45%] md:top-[50%] z-20 pointer-events-none"
               style={{
                 transformOrigin: 'top center',
                 animation: 'dropIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
@@ -76,13 +76,13 @@ export function Hero() {
                 }}
               >
                 {/* The visible string hanging from behind the letters */}
-                <div className="w-[3px] md:w-[5px] h-16 md:h-24 bg-[#E89B68] rounded-full opacity-80" />
+                <div className="w-[3px] md:w-[5px] h-10 sm:h-16 md:h-24 bg-[#E89B68] rounded-full opacity-80" />
               </div>
             </div>
 
             {/* Tag Wrapper (In Front of Text, z-40) */}
             <div 
-              className="absolute left-[81%] top-[55%] md:top-[50%] z-40 pointer-events-none"
+              className="absolute left-[81%] top-[35%] sm:top-[45%] md:top-[50%] z-40 pointer-events-none"
               style={{
                 transformOrigin: 'top center',
                 animation: 'dropIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
@@ -96,11 +96,11 @@ export function Hero() {
                 }}
               >
                 {/* Invisible spacer to perfectly align the tag with the string above */}
-                <div className="w-[3px] md:w-[5px] h-16 md:h-24 opacity-0" />
+                <div className="w-[3px] md:w-[5px] h-10 sm:h-16 md:h-24 opacity-0" />
                 
                 {/* The tag itself */}
-                <div className="relative border-[3px] md:border-[5px] border-[#E89B68] rounded-xl md:rounded-[1.5rem] px-4 py-2 md:px-8 md:py-3 bg-[#FFFDF1]/95 backdrop-blur-md shadow-[4px_4px_0px_rgba(232,155,104,0.15)] md:shadow-[8px_8px_0px_rgba(232,155,104,0.15)]">
-                  <span className="text-[#E89B68] whitespace-nowrap font-black text-lg md:text-3xl uppercase tracking-[0.15em]" style={{ fontFamily: 'var(--font-clash)' }}>
+                <div className="relative border-[3px] md:border-[5px] border-[#E89B68] rounded-xl md:rounded-[1.5rem] px-3 py-1.5 sm:px-4 sm:py-2 md:px-8 md:py-3 bg-[#FFFDF1]/95 backdrop-blur-md shadow-[3px_3px_0px_rgba(232,155,104,0.15)] sm:shadow-[4px_4px_0px_rgba(232,155,104,0.15)] md:shadow-[8px_8px_0px_rgba(232,155,104,0.15)]">
+                  <span className="text-[#E89B68] whitespace-nowrap font-black text-[10px] sm:text-sm md:text-3xl uppercase tracking-[0.15em]" style={{ fontFamily: 'var(--font-clash)' }}>
                     Coming Soon
                   </span>
                   
@@ -117,7 +117,7 @@ export function Hero() {
           </div>
         <h2
   className="
-    mt-8
+    mt-12
     md:mt-12
     leading-[0.9]
     tracking-[-0.04em]
