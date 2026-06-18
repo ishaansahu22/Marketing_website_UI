@@ -1,9 +1,6 @@
 'use server'
 
-import { Resend } from 'resend'
 import { headers } from 'next/headers'
-
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 const SHEET_WEBHOOK = process.env.GOOGLE_SHEET_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbxBdYkD06WdJ0KxCPWqSCRm-Dxsyg6pFTJv2HybE9YD7fygInm68oGAis0OhpvwTeY0/exec';
 
@@ -25,7 +22,6 @@ export async function getWaitlistCount(): Promise<number> {
 
 export async function subscribeToWaitlist(email: string) {
   let sheetSaved = false
-  let emailSent = false
 
   // Fetch the user's IP Address
   const headersList = await headers()
@@ -54,37 +50,10 @@ export async function subscribeToWaitlist(email: string) {
     sheetSaved = true
   }
 
-  // Try to send the welcome email via Resend if configured
-  if (resend) {
-    try {
-      const { data, error } = await resend.emails.send({
-        from: 'DayBricks <onboarding@resend.dev>',
-        to: email,
-        subject: 'Welcome to the DayBricks Waitlist! 🎉',
-        html: `
-          <div style="font-family: sans-serif; padding: 20px;">
-            <h2>You're on the list!</h2>
-            <p>Thank you for joining the DayBricks waitlist.</p>
-            <p>We are building the ultimate day-planning experience, and we can't wait to share it with you.</p>
-            <br/>
-            <p>Talk soon,</p>
-            <p><strong>The DayBricks Team</strong></p>
-          </div>
-        `
-      })
-
-      if (!error) {
-        emailSent = true
-      } else {
-        console.error('Resend Error:', error)
-      }
-    } catch (error) {
-      console.error('Resend send failed:', error)
-    }
-  }
-
   // Fetch the updated count after saving
   const count = await getWaitlistCount()
 
-  return { success: true, emailSent, count }
+  // We are using Google Apps Script's MailApp to send the email now,
+  // so emailSent is true if sheetSaved is true since Google handles it.
+  return { success: true, emailSent: sheetSaved, count }
 }
