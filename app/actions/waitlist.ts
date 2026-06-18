@@ -9,7 +9,7 @@ export async function subscribeToWaitlist(email: string) {
   let emailSent = false
 
   // 1. Always save to Google Sheet first
-  const sheetWebhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbxOIcztY7BQjwVMg7zlFwBhTZJ-v4VcTTgvJ1IPr_z_BvQNV2YkCLa41QD73Eu_NNb6/exec';
+  const sheetWebhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbxZuHuuiyHU22s-TOa2ZjiviYEFimOlEmbiqhkMG3EIHzcf27PoUiHgMF2LQPvqs__0/exec';
   
   try {
     // Google Apps Script returns a 302 redirect on POST.
