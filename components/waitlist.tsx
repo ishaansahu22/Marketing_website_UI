@@ -18,7 +18,7 @@ import { subscribeToWaitlist } from '@/app/actions/waitlist'
 
 export function Waitlist() {
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error' | 'already_submitted'>('idle')
   const [count, setCount] = useState(0)
   const containerRef = useRef(null)
   const isInView = useInView(containerRef, { once: true, amount: 0.2 })
@@ -35,14 +35,22 @@ export function Waitlist() {
       setStatus('error')
       return
     }
+
+    // Check if they already submitted this exact email on this device
+    const prevSubmitted = localStorage.getItem('waitlist_email')
+    if (prevSubmitted === email) {
+      setStatus('already_submitted')
+      return
+    }
     
     setStatus('loading')
     
-    // Call the Resend Server Action
+    // Call the Server Action
     const result = await subscribeToWaitlist(email)
     
     if (result.success) {
       setStatus('done')
+      localStorage.setItem('waitlist_email', email)
       // When the user themselves signs up, immediately increment the counter
       setCount(prev => Math.min(100, prev + 1))
     } else {
@@ -117,13 +125,13 @@ export function Waitlist() {
             </p>
           </div>
 
-          {status === 'done' ? (
+          {status === 'done' || status === 'already_submitted' ? (
             <div className="mx-auto mt-10 flex max-w-md flex-col items-center gap-3">
               <span className="inline-flex size-14 items-center justify-center rounded-2xl text-white shadow-lg" style={{ background: '#12A798' }}>
                 <Check className="size-7" />
               </span>
               <p className="text-xl font-bold" style={{ fontFamily: 'var(--font-clash)', color: '#0a1413' }}>
-                You’re on the list!
+                {status === 'already_submitted' ? "You're already on the list!" : "You’re on the list!"}
               </p>
               <p className="text-sm" style={{ color: 'rgba(20, 40, 20, 0.65)' }}>
                 We’ll email <span className="font-semibold text-[#0a1413]">{email}</span> at
