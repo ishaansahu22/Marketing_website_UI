@@ -5,6 +5,24 @@ import { headers } from 'next/headers'
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
+const SHEET_WEBHOOK = process.env.GOOGLE_SHEET_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbxBdYkD06WdJ0KxCPWqSCRm-Dxsyg6pFTJv2HybE9YD7fygInm68oGAis0OhpvwTeY0/exec';
+
+export async function getWaitlistCount(): Promise<number> {
+  try {
+    const response = await fetch(SHEET_WEBHOOK, {
+      method: 'GET',
+      cache: 'no-store',
+    })
+    if (response.ok) {
+      const data = await response.json()
+      return data.count ?? 0
+    }
+  } catch (error) {
+    console.error('Failed to fetch waitlist count:', error)
+  }
+  return 0
+}
+
 export async function subscribeToWaitlist(email: string) {
   let sheetSaved = false
   let emailSent = false
@@ -13,9 +31,6 @@ export async function subscribeToWaitlist(email: string) {
   const headersList = await headers()
   const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'Unknown IP'
 
-  // 1. Always save to Google Sheet first
-  const sheetWebhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbxZuHuuiyHU22s-TOa2ZjiviYEFimOlEmbiqhkMG3EIHzcf27PoUiHgMF2LQPvqs__0/exec';
-  
   try {
     const now = new Date()
     // Convert to IST (UTC+5:30)
@@ -24,31 +39,22 @@ export async function subscribeToWaitlist(email: string) {
     const date = ist.toISOString().split('T')[0]
     const time = ist.toISOString().split('T')[1].split('.')[0] + ' IST'
 
-    // Google Apps Script returns a 302 redirect on POST.
-    // Using redirect: 'follow' causes fetch to change POST -> GET, losing the body.
-    // Using redirect: 'manual' lets us capture the redirect without losing data.
-    // The script still executes and writes the data on the initial POST.
-    const response = await fetch(sheetWebhookUrl, {
+    const response = await fetch(SHEET_WEBHOOK, {
       method: 'POST',
       headers: {
         'Content-Type': 'text/plain',
       },
-      // Pass the separated date and time along with email and ip
       body: JSON.stringify({ email, date, time, ip }),
       redirect: 'follow',
     })
 
-    // Google Apps Script may return a redirect (302/307) or a 200 after following it.
-    // Either way, if we get here without an exception, the script executed.
     sheetSaved = true
   } catch (sheetError) {
     console.error('Failed to save to Google Sheet:', sheetError)
-    // Still consider it potentially saved — Google's redirect can cause fetch errors
-    // even when the data was successfully written
     sheetSaved = true
   }
 
-  // 2. Try to send the welcome email via Resend if configured
+  // Try to send the welcome email via Resend if configured
   if (resend) {
     try {
       const { data, error } = await resend.emails.send({
@@ -77,5 +83,8 @@ export async function subscribeToWaitlist(email: string) {
     }
   }
 
-  return { success: true, emailSent }
+  // Fetch the updated count after saving
+  const count = await getWaitlistCount()
+
+  return { success: true, emailSent, count }
 }
