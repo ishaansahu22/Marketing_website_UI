@@ -19,6 +19,7 @@ import { subscribeToWaitlist, getWaitlistCount, sendWaitlistEmail } from '@/app/
 export function Waitlist() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
+  const [errorMsg, setErrorMsg] = useState('Please enter a valid email address.')
   const [count, setCount] = useState(0)
   const containerRef = useRef(null)
   const isInView = useInView(containerRef, { once: true, amount: 0.2 })
@@ -33,6 +34,7 @@ export function Waitlist() {
     e.preventDefault()
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
     if (!ok) {
+      setErrorMsg('Please enter a valid email address.')
       setStatus('error')
       return
     }
@@ -49,11 +51,13 @@ export function Waitlist() {
         // Revert UI on failure
         setStatus('error')
         setCount(prev => prev - 1)
+        setErrorMsg("Database Error: " + (result.error || "Unknown error"))
         console.error("Supabase Error:", result.error)
       }
     }).catch(err => {
       setStatus('error')
       setCount(prev => prev - 1)
+      setErrorMsg("Network Error: " + err.message)
       console.error('Waitlist submission failed:', err)
     })
   }
@@ -178,7 +182,7 @@ export function Waitlist() {
               
               {status === 'error' ? (
                 <p className="mt-3 text-left text-sm text-red-500" role="alert">
-                  Please enter a valid email address.
+                  {errorMsg}
                 </p>
               ) : null}
 

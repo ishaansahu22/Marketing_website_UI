@@ -16,7 +16,7 @@ export async function subscribeToWaitlist(email: string) {
 
   if (insertResult.error) {
     console.error('Failed to save to Supabase:', insertResult.error);
-    return { success: false, error: 'Failed to save submission', rank: 0 }
+    return { success: false, error: insertResult.error.message || 'Failed to save submission', rank: 0 }
   }
 
   return { success: true, rank }
