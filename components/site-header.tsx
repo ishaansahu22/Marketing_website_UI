@@ -95,7 +95,7 @@ export function SiteHeader() {
           )}
         </AnimatePresence>
 
-        {/* The Animated Route (Only visible when collapsed into a brick) */}
+        {/* The Animated Smile Route (Only visible when collapsed into a brick) */}
         <AnimatePresence mode="popLayout">
           {activeState === 'scrollingDown' && (
             <motion.div 
@@ -105,15 +105,15 @@ export function SiteHeader() {
               transition={{ duration: 0.2, delay: 0.1 }}
               className="flex items-center justify-center w-full text-white/80"
             >
-              <svg width="46" height="12" viewBox="0 0 46 12" className="overflow-visible">
+              <svg width="46" height="20" viewBox="0 0 46 20" className="overflow-visible">
                 {/* Left Dot */}
-                <circle cx="4" cy="6" r="2" fill="currentColor" />
+                <circle cx="8" cy="8" r="2" fill="currentColor" />
                 {/* Right Dot */}
-                <circle cx="42" cy="6" r="2" fill="currentColor" />
+                <circle cx="38" cy="8" r="2" fill="currentColor" />
                 
-                {/* Looping Curved Route */}
+                {/* Looping Smiling Route */}
                 <motion.path
-                  d="M 8 6 Q 23 -2, 38 6"
+                  d="M 8 8 Q 23 18, 38 8"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="1.5"

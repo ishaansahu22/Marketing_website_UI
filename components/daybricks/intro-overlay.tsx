@@ -82,9 +82,8 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
                   tracking-tight
                   whitespace-nowrap
                   select-none
-                  text-center
                   scale-y-[2.0] md:scale-y-[1.6]
-                  origin-top
+                  origin-top-left
                 "
                 style={{
                   fontFamily: 'var(--font-display-black)',

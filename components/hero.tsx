@@ -31,9 +31,8 @@ export function Hero() {
                 whitespace-nowrap
                 select-none
                 w-full
-                text-center
                 scale-y-[2.0] md:scale-y-[1.6]
-                origin-top
+                origin-top-left
               "
               style={{
                 fontFamily: 'var(--font-display-black)',
@@ -126,7 +125,6 @@ export function Hero() {
     md:leading-[0.9]
     tracking-[-0.04em]
     max-w-none
-    text-center
   "
   style={{
     fontFamily: 'var(--font-boska)',
@@ -146,7 +144,7 @@ export function Hero() {
     brick by brick.
   </span>
 </h2>
-<div className="mt-6 md:mt-12 flex flex-col gap-4 sm:flex-row pb-8 md:pb-24 lg:pb-32 justify-center w-full">
+<div className="mt-6 md:mt-12 flex flex-col gap-4 sm:flex-row pb-8 md:pb-24 lg:pb-32 justify-start w-full">
   <div>
   <a
     href="#waitlist"
