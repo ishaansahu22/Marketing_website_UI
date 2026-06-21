@@ -39,7 +39,7 @@ export function Hero() {
                 fontFamily: 'var(--font-display-black)',
                 fontWeight: 400,
                 color: '#3A1E14',
-                fontSize: 'clamp(3rem, 10.5vw, 20rem)', 
+                fontSize: 'clamp(3rem, 15vw, 25rem)', 
                 letterSpacing: '-0.02em',
               }}
             >
@@ -130,7 +130,7 @@ export function Hero() {
   style={{
     fontFamily: 'var(--font-boska)',
     color: '#5C4A43',
-    fontSize: 'clamp(1rem, 3.15vw, 6rem)', /* Exactly 30% of the title size */
+    fontSize: 'clamp(1rem, 4.5vw, 7.5rem)', /* Exactly 30% of the title size */
   }}
 >
   <span className="hidden md:block">
