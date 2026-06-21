@@ -14,7 +14,7 @@ const rewards = [
   { emoji: '🎁', title: 'Exclusive Feature Testing Access' },
 ]
 
-import { subscribeToWaitlist, getWaitlistCount } from '@/app/actions/waitlist'
+import { subscribeToWaitlist, getWaitlistCount, sendWaitlistEmail } from '@/app/actions/waitlist'
 
 export function Waitlist() {
   const [email, setEmail] = useState('')
@@ -39,13 +39,16 @@ export function Waitlist() {
     
     setStatus('loading')
     
-    // Call the Resend Server Action
+    // Step 1: Save to Supabase only — this is FAST
     const result = await subscribeToWaitlist(email)
     
     if (result.success) {
+      // Show success IMMEDIATELY
       setStatus('done')
-      // When the user themselves signs up, immediately increment the counter
       setCount(prev => prev + 1)
+      
+      // Step 2: Send email in the background — user never waits for this
+      sendWaitlistEmail(email, result.rank).catch(() => {})
     } else {
       setStatus('error')
     }

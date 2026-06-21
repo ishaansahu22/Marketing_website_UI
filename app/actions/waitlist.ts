@@ -6,70 +6,65 @@ import { supabase } from '@/lib/supabase'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function subscribeToWaitlist(email: string) {
-  let contactSaved = false
-  let emailSent = false
-
-  // Determine rank and save to Supabase concurrently to cut response time in half
+  // ONLY save to Supabase — this is fast and returns instantly
   const [countResult, insertResult] = await Promise.all([
     getWaitlistCount(),
     supabase.from('waitlist').insert([{ email }])
   ]);
 
-  const currentCount = countResult;
-  const rank = currentCount + 1;
+  const rank = countResult + 1;
 
-  if (!insertResult.error) {
-    contactSaved = true;
-  } else {
+  if (insertResult.error) {
     console.error('Failed to save to Supabase:', insertResult.error);
+    return { success: false, error: 'Failed to save submission', rank: 0 }
   }
 
-  // As long as the contact was saved, we consider it a success — return IMMEDIATELY
-  if (contactSaved) {
-    // Fire-and-forget: send the email in the background without blocking the response
-    if (process.env.RESEND_API_KEY) {
-      const subject = rank <= 100 
-        ? 'Welcome to the DayBricks Waitlist! 🎉' 
-        : 'DayBricks Waitlist: You are on the list! 🚀';
+  return { success: true, rank }
+}
 
-      const htmlContent = rank <= 100 
-        ? `
-          <div style="font-family: sans-serif; padding: 20px;">
-            <h2>You're in! You are #${rank}/100.</h2>
-            <p>Thank you for joining the DayBricks waitlist.</p>
-            <p>You have secured your spot as one of our first 100 Founding Explorers for early access.</p>
-            <p>We are building the ultimate day-planning experience, and we can't wait to share it with you.</p>
-            <br/>
-            <p>Talk soon,</p>
-            <p><strong>The DayBricks Team</strong></p>
-          </div>
-        `
-        : `
-          <div style="font-family: sans-serif; padding: 20px;">
-            <h2>You're on the list!</h2>
-            <p>Thank you for joining the DayBricks waitlist.</p>
-            <p>Our first 100 early access slots are currently full, but we will update you as soon as the final launch is out there!</p>
-            <p>We are building the ultimate day-planning experience, and we can't wait to share it with you.</p>
-            <br/>
-            <p>Talk soon,</p>
-            <p><strong>The DayBricks Team</strong></p>
-          </div>
-        `;
+export async function sendWaitlistEmail(email: string, rank: number) {
+  if (!process.env.RESEND_API_KEY) return { sent: false }
 
-      // Do NOT await — let it run in the background
-      resend.emails.send({
-        from: 'DayBricks <onboarding@resend.dev>',
-        to: email,
-        subject: subject,
-        html: htmlContent
-      }).catch(err => console.error('Background email send failed:', err));
-    }
+  try {
+    const subject = rank <= 100 
+      ? 'Welcome to the DayBricks Waitlist! 🎉' 
+      : 'DayBricks Waitlist: You are on the list! 🚀';
 
-    return { success: true, emailSent: true }
+    const htmlContent = rank <= 100 
+      ? `
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h2>You're in! You are #${rank}/100.</h2>
+          <p>Thank you for joining the DayBricks waitlist.</p>
+          <p>You have secured your spot as one of our first 100 Founding Explorers for early access.</p>
+          <p>We are building the ultimate day-planning experience, and we can't wait to share it with you.</p>
+          <br/>
+          <p>Talk soon,</p>
+          <p><strong>The DayBricks Team</strong></p>
+        </div>
+      `
+      : `
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h2>You're on the list!</h2>
+          <p>Thank you for joining the DayBricks waitlist.</p>
+          <p>Our first 100 early access slots are currently full, but we will update you as soon as the final launch is out there!</p>
+          <p>We are building the ultimate day-planning experience, and we can't wait to share it with you.</p>
+          <br/>
+          <p>Talk soon,</p>
+          <p><strong>The DayBricks Team</strong></p>
+        </div>
+      `;
+
+    await resend.emails.send({
+      from: 'DayBricks <onboarding@resend.dev>',
+      to: email,
+      subject,
+      html: htmlContent
+    });
+    return { sent: true }
+  } catch (err) {
+    console.error('Email send failed:', err);
+    return { sent: false }
   }
-
-  // If even the contact creation failed, return error
-  return { success: false, error: 'Failed to save submission' }
 }
 
 export async function getWaitlistCount() {
