@@ -1,4 +1,4 @@
-import { Analytics } from '@vercel/analytics/next'
+import { Analytics } from '@vercel/analytics/react'
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 
@@ -143,7 +143,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <CustomCursor />
         {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <Analytics />
       </body>
     </html>
   )
