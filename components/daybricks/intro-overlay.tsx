@@ -55,7 +55,7 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
               animate={
                 phase === 'intro'
                   ? { scale: 1, opacity: 1, y: 0, rotate: 0, left: '50%', x: '-50%', top: '10vh' }
-                  : { scale: 0.3, opacity: 0, y: 0, rotate: -90, left: '1.5rem', x: '0%', top: '1.5rem' }
+                  : { scale: 0.35, opacity: 1, y: 0, rotate: -90, left: '1.5rem', x: '0%', top: '1.5rem' }
               }
               transition={
                 phase === 'intro'
