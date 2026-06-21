@@ -26,10 +26,10 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
       } else {
         // Fallbacks just in case
         if (window.innerWidth < 768) {
-          setTargetX('calc(-50% - 148px)')
+          setTargetX('calc(50% - 148px)')
           setTargetY('44px')
         } else {
-          setTargetX('calc(-50% - 195px)')
+          setTargetX('calc(50% - 195px)')
           setTargetY('68px')
         }
       }
@@ -91,7 +91,7 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
               animate={
                 phase === 'intro'
                   ? { scale: 1, opacity: 1, rotate: 0, left: '50%', x: '-50%', top: '15vh', y: '-50%' }
-                  : { scale: 0.45, opacity: 1, rotate: -360, left: '50%', x: targetX, top: targetY, y: '-50%' }
+                  : { scale: 0.45, opacity: 1, rotate: -360, left: targetX, x: '-50%', top: targetY, y: '-50%' }
               }
               transition={
                 phase === 'intro'
