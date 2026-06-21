@@ -1,6 +1,6 @@
 'use server'
 
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 import { supabase } from '@/lib/supabase'
 
 export async function subscribeToWaitlist(email: string) {
@@ -21,11 +21,20 @@ export async function subscribeToWaitlist(email: string) {
 }
 
 export async function sendWaitlistEmail(email: string, rank: number) {
-  if (!process.env.RESEND_API_KEY) return { sent: false }
-
-  const resend = new Resend(process.env.RESEND_API_KEY)
+  if (!process.env.GMAIL_APP_PASSWORD) {
+    console.error("Missing GMAIL_APP_PASSWORD in environment variables")
+    return { sent: false }
+  }
 
   try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'contact.daybricks@gmail.com',
+        pass: process.env.GMAIL_APP_PASSWORD
+      }
+    });
+
     const subject = rank <= 100 
       ? 'Welcome to the DayBricks Waitlist! 🎉' 
       : 'DayBricks Waitlist: You are on the list! 🚀';
@@ -54,8 +63,8 @@ export async function sendWaitlistEmail(email: string, rank: number) {
         </div>
       `;
 
-    await resend.emails.send({
-      from: 'DayBricks <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: '"DayBricks" <contact.daybricks@gmail.com>',
       to: email,
       subject,
       html: htmlContent
