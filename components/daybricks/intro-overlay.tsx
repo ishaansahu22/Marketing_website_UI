@@ -6,8 +6,26 @@ import { Logo } from '@/components/daybricks/logo'
 
 export function IntroOverlay({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState<'intro' | 'exit' | 'done'>('intro')
+  const [targetX, setTargetX] = useState('calc(-50% - 195px)')
+  const [targetY, setTargetY] = useState('68px')
+  
   const onDoneRef = useRef(onDone)
   onDoneRef.current = onDone
+
+  useEffect(() => {
+    const updateTarget = () => {
+      if (window.innerWidth < 768) {
+        setTargetX('calc(-50% - 148px)') // Exact mobile logo X
+        setTargetY('44px') // Exact mobile logo Y
+      } else {
+        setTargetX('calc(-50% - 195px)') // Exact desktop logo X
+        setTargetY('68px') // Exact desktop logo Y
+      }
+    }
+    updateTarget()
+    window.addEventListener('resize', updateTarget)
+    return () => window.removeEventListener('resize', updateTarget)
+  }, [])
 
   useEffect(() => {
     // Lock scroll while the cinematic plays
@@ -59,7 +77,7 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
               animate={
                 phase === 'intro'
                   ? { scale: 1, opacity: 1, rotate: 0, left: '50%', x: '-50%', top: '15vh', y: '-50%' }
-                  : { scale: 0.7, opacity: 1, rotate: -360, left: '56px', x: '-50%', top: '56px', y: '-50%' }
+                  : { scale: 0.45, opacity: 1, rotate: -360, left: '50%', x: targetX, top: targetY, y: '-50%' }
               }
               transition={
                 phase === 'intro'
