@@ -37,21 +37,18 @@ export function Waitlist() {
       return
     }
     
-    setStatus('loading')
+    // OPTIMISTIC UI UPDATE: Show success INSTANTLY
+    setStatus('done')
+    setCount(prev => prev + 1)
     
-    // Step 1: Save to Supabase only — this is FAST
-    const result = await subscribeToWaitlist(email)
-    
-    if (result.success) {
-      // Show success IMMEDIATELY
-      setStatus('done')
-      setCount(prev => prev + 1)
-      
-      // Step 2: Send email in the background — user never waits for this
-      sendWaitlistEmail(email, result.rank).catch(() => {})
-    } else {
-      setStatus('error')
-    }
+    // Fire the server actions entirely in the background so the user never waits
+    subscribeToWaitlist(email).then(result => {
+      if (result.success) {
+        sendWaitlistEmail(email, result.rank).catch(() => {})
+      }
+    }).catch(err => {
+      console.error('Waitlist submission failed:', err)
+    })
   }
 
   return (
