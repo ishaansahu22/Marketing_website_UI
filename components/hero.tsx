@@ -34,9 +34,10 @@ export function Hero() {
                 text-center
               "
               style={{
-                fontFamily: 'var(--font-clash)',
+                fontFamily: "'Tanker', sans-serif",
+                fontWeight: 400,
                 color: '#3A1E14',
-                fontSize: '17vw', 
+                fontSize: '24vw', 
               }}
             >
               DAYBRICKS
@@ -123,10 +124,9 @@ export function Hero() {
     max-w-none
   "
   style={{
-    fontFamily: 'var(--font-sans-inter)',
-    fontWeight: 500,
+    fontFamily: 'var(--font-boska)',
     color: '#5C4A43',
-    fontSize: 'clamp(1.5rem, 3.5vw, 4.5rem)',
+    fontSize: 'clamp(2rem, 4.5vw, 6rem)',
   }}
 >
   <span className="hidden md:block">
