@@ -35,9 +35,11 @@ export function Hero() {
               "
               style={{
                 fontFamily: "'Tanker', sans-serif",
-                fontWeight: 400,
+                fontWeight: 900,
                 color: '#3A1E14',
                 fontSize: 'clamp(5rem, 24vw, 20rem)', 
+                transform: 'scaleY(1.15)',
+                transformOrigin: 'bottom',
               }}
             >
               DAYBRICKS
