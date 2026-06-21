@@ -36,10 +36,10 @@ export function Hero() {
                 origin-bottom
               "
               style={{
-                fontFamily: 'var(--font-clash)',
-                fontWeight: 'bold',
+                fontFamily: "'Tanker', sans-serif",
+                fontWeight: 400,
                 color: '#3A1E14',
-                fontSize: 'clamp(3rem, 18vw, 14rem)', 
+                fontSize: 'clamp(5rem, 24vw, 20rem)', 
               }}
             >
               DAYBRICKS
@@ -119,16 +119,17 @@ export function Hero() {
           </div>
         <h2
   className="
-    mt-12
-    md:mt-12
-    leading-[0.9]
+    mt-4
+    md:mt-24
+    leading-[1.1]
+    md:leading-[0.9]
     tracking-[-0.04em]
     max-w-none
   "
   style={{
     fontFamily: 'var(--font-boska)',
     color: '#5C4A43',
-    fontSize: 'clamp(0.9rem, 5.4vw, 4.2rem)', /* 30% of title size */
+    fontSize: 'clamp(1.5rem, 7.2vw, 6rem)', /* Exactly 30% of the title size */
   }}
 >
   <span className="hidden md:block">
