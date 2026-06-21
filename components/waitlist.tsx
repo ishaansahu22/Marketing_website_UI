@@ -45,8 +45,15 @@ export function Waitlist() {
     subscribeToWaitlist(email).then(result => {
       if (result.success) {
         sendWaitlistEmail(email, result.rank).catch(() => {})
+      } else {
+        // Revert UI on failure
+        setStatus('error')
+        setCount(prev => prev - 1)
+        console.error("Supabase Error:", result.error)
       }
     }).catch(err => {
+      setStatus('error')
+      setCount(prev => prev - 1)
       console.error('Waitlist submission failed:', err)
     })
   }
