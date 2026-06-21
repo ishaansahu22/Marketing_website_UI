@@ -24,18 +24,30 @@ export function SiteHeader() {
       <motion.div 
         layout
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
-        className={`flex items-center pointer-events-auto transition-colors duration-300 border overflow-hidden ${
+        className={`flex items-center justify-center pointer-events-auto transition-colors duration-300 border overflow-hidden ${
           navState === 'top'
             ? "bg-transparent border-transparent gap-6 md:gap-10 rounded-full px-6 py-3 md:px-10 md:py-4 shadow-none" 
             : navState === 'scrollingUp'
             ? "bg-white/70 backdrop-blur-xl border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.08)] gap-6 md:gap-10 rounded-full px-6 py-3 md:px-10 md:py-4"
-            : "bg-[#FFFDF1]/80 backdrop-blur-2xl border-white/60 shadow-[0_15px_35px_rgb(0,0,0,0.1)] gap-0 rounded-2xl px-4 py-4 md:px-5 md:py-5"
+            : "bg-[#FFFDF1]/80 backdrop-blur-2xl border-white/60 shadow-[0_15px_35px_rgb(0,0,0,0.1)] rounded-lg w-16 h-6 md:w-24 md:h-8"
         }`}
       >
-        <motion.a layout href="#top" aria-label="DayBricks home" className="flex items-center">
-          {/* Logo stays visible in the brick, acts as a "back to top" button */}
-          <Logo className={`transition-all duration-300 [&>svg]:size-8 md:[&>svg]:size-10 ${navState === 'scrollingDown' ? 'scale-100' : 'scale-110 hover:saturate-150'}`} />
-        </motion.a>
+        <AnimatePresence mode="popLayout">
+          {navState !== 'scrollingDown' && (
+            <motion.a 
+              layout 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.2 }}
+              href="#top" 
+              aria-label="DayBricks home" 
+              className="flex items-center"
+            >
+              <Logo className="scale-110 hover:saturate-150 transition-all duration-300 [&>svg]:size-8 md:[&>svg]:size-10" />
+            </motion.a>
+          )}
+        </AnimatePresence>
         
         <AnimatePresence mode="popLayout">
           {navState !== 'scrollingDown' && (
@@ -66,6 +78,22 @@ export function SiteHeader() {
                 Waitlist
               </a>
             </motion.nav>
+          )}
+        </AnimatePresence>
+
+        {/* The Brick Studs (Only visible when collapsed into a brick) */}
+        <AnimatePresence mode="popLayout">
+          {navState === 'scrollingDown' && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, delay: 0.1 }}
+              className="flex gap-2 md:gap-3 items-center justify-center w-full"
+            >
+              <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/60 shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]" />
+              <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/60 shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]" />
+            </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
