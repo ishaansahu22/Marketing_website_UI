@@ -84,7 +84,7 @@ export function RouteJourney() {
   })
 
   return (
-    <section id="route" className="relative w-full bg-[#FFFDF1] overflow-clip">
+    <section id="features" className="relative w-full bg-[#FFFDF1] overflow-clip">
       <div
         ref={sectionRef}
         className="relative mx-auto max-w-[90rem] px-6 pt-20 pb-4 lg:pt-24 lg:pb-8"
