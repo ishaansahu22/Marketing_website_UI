@@ -7,12 +7,12 @@ export function Hero() {
   className="
     relative
     flex
-    min-h-screen
-    items-center
+    min-h-[75vh] md:min-h-screen
+    pt-[25vh]
     px-4
     md:px-8
-    pb-32
-    lg:pb-48
+    pb-16
+    lg:pb-32
     overflow-x-hidden
   "
       style={{
@@ -120,8 +120,8 @@ export function Hero() {
           </div>
         <h2
   className="
-    mt-24
-    md:mt-48
+    mt-16
+    md:mt-32
     leading-[1.1]
     md:leading-[0.9]
     tracking-[-0.04em]
@@ -130,7 +130,7 @@ export function Hero() {
   style={{
     fontFamily: 'var(--font-boska)',
     color: '#5C4A43',
-    fontSize: 'clamp(1.3rem, 4.5vw, 7.5rem)', /* Exactly 30% of the title size */
+    fontSize: 'clamp(1.6rem, 5.5vw, 7.5rem)', /* Increased mobile size by ~15% */
   }}
 >
   <span className="hidden md:block">
@@ -145,7 +145,7 @@ export function Hero() {
     brick by brick.
   </span>
 </h2>
-<div className="mt-4 md:mt-12 flex flex-col gap-4 sm:flex-row pb-16 md:pb-24 lg:pb-32">
+<div className="mt-6 md:mt-12 flex flex-col gap-4 sm:flex-row pb-8 md:pb-24 lg:pb-32">
   <div>
   <a
     href="#waitlist"
