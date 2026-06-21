@@ -7,9 +7,14 @@ import { Logo } from '@/components/daybricks/logo'
 export function SiteHeader() {
   const { scrollY } = useScroll()
   const [navState, setNavState] = useState<'top' | 'scrollingUp' | 'scrollingDown'>('top')
+  const [isForcedOpen, setIsForcedOpen] = useState(false)
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0
+    
+    // Any scroll interaction resets the forced open state
+    if (isForcedOpen) setIsForcedOpen(false)
+
     if (latest <= 50) {
       setNavState('top')
     } else if (latest > previous && latest > 150) {
@@ -19,21 +24,27 @@ export function SiteHeader() {
     }
   })
 
+  // If forced open by click, act as if we are scrolling up
+  const activeState = isForcedOpen && navState === 'scrollingDown' ? 'scrollingUp' : navState
+
   return (
     <header className="fixed top-4 md:top-8 left-0 right-0 z-[60] flex justify-center px-4 pointer-events-none">
       <motion.div 
         layout
+        onClick={() => {
+          if (navState === 'scrollingDown') setIsForcedOpen(true)
+        }}
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
         className={`flex items-center justify-center pointer-events-auto transition-colors duration-300 border overflow-hidden ${
-          navState === 'top'
-            ? "bg-transparent border-transparent gap-6 md:gap-10 rounded-full px-6 py-3 md:px-10 md:py-4 shadow-none" 
-            : navState === 'scrollingUp'
-            ? "bg-white/70 backdrop-blur-xl border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.08)] gap-6 md:gap-10 rounded-full px-6 py-3 md:px-10 md:py-4"
-            : "bg-white/10 backdrop-blur-md backdrop-invert border-white/20 shadow-[0_15px_35px_rgb(0,0,0,0.2)] rounded-lg w-16 h-6 md:w-24 md:h-8"
+          activeState === 'top'
+            ? "bg-transparent border-transparent gap-6 md:gap-10 rounded-full px-6 py-3 md:px-10 md:py-4 shadow-none cursor-default" 
+            : activeState === 'scrollingUp'
+            ? "bg-white/70 backdrop-blur-xl border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.08)] gap-6 md:gap-10 rounded-full px-6 py-3 md:px-10 md:py-4 cursor-default"
+            : "bg-white/10 backdrop-blur-md backdrop-invert border-white/20 shadow-[0_15px_35px_rgb(0,0,0,0.2)] rounded-lg w-16 h-6 md:w-24 md:h-8 cursor-pointer hover:scale-105 transition-transform"
         }`}
       >
         <AnimatePresence mode="popLayout">
-          {navState !== 'scrollingDown' && (
+          {activeState !== 'scrollingDown' && (
             <motion.a 
               layout 
               initial={{ opacity: 0, scale: 0.8 }}
@@ -50,7 +61,7 @@ export function SiteHeader() {
         </AnimatePresence>
         
         <AnimatePresence mode="popLayout">
-          {navState !== 'scrollingDown' && (
+          {activeState !== 'scrollingDown' && (
             <motion.nav 
               initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)", x: -20 }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)", x: 0 }}
@@ -83,7 +94,7 @@ export function SiteHeader() {
 
         {/* The Brick Studs (Only visible when collapsed into a brick) */}
         <AnimatePresence mode="popLayout">
-          {navState === 'scrollingDown' && (
+          {activeState === 'scrollingDown' && (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
