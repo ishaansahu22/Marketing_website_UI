@@ -3,8 +3,6 @@
 import { Resend } from 'resend'
 import { supabase } from '@/lib/supabase'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function subscribeToWaitlist(email: string) {
   // ONLY save to Supabase — this is fast and returns instantly
   const [countResult, insertResult] = await Promise.all([
@@ -24,6 +22,8 @@ export async function subscribeToWaitlist(email: string) {
 
 export async function sendWaitlistEmail(email: string, rank: number) {
   if (!process.env.RESEND_API_KEY) return { sent: false }
+
+  const resend = new Resend(process.env.RESEND_API_KEY)
 
   try {
     const subject = rank <= 100 
