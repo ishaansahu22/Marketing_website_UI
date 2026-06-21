@@ -51,16 +51,18 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
             className="flex flex-col items-center relative"
           >
             <motion.div
-              initial={{ scale: 0, opacity: 0, y: 50, rotate: -20 }}
-              animate={{ scale: 1, opacity: 1, y: 0, rotate: 0 }}
-              transition={{ 
-                type: 'spring', 
-                stiffness: 200, 
-                damping: 12, 
-                mass: 1.2,
-                delay: 0.3 
-              }}
-              className="fixed top-[8vh] md:top-[12vh] left-1/2 -translate-x-1/2"
+              initial={{ scale: 0, opacity: 0, y: 50, rotate: -20, left: '50%', x: '-50%', top: '10vh' }}
+              animate={
+                phase === 'intro'
+                  ? { scale: 1, opacity: 1, y: 0, rotate: 0, left: '50%', x: '-50%', top: '10vh' }
+                  : { scale: 0.3, opacity: 0, y: 0, rotate: -90, left: '1.5rem', x: '0%', top: '1.5rem' }
+              }
+              transition={
+                phase === 'intro'
+                  ? { type: 'spring', stiffness: 200, damping: 12, mass: 1.2, delay: 0.3 }
+                  : { duration: 1.0, ease: [0.76, 0, 0.24, 1] }
+              }
+              className="fixed z-50 pointer-events-none"
             >
               <Logo className="mb-4 scale-125 md:scale-150 drop-shadow-[0_15px_35px_rgba(18,167,152,0.3)]" />
             </motion.div>
