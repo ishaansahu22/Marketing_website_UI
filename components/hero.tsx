@@ -120,8 +120,8 @@ export function Hero() {
           </div>
         <h2
   className="
-    mt-8
-    md:mt-32
+    mt-16
+    md:mt-48
     leading-[1.1]
     md:leading-[0.9]
     tracking-[-0.04em]
