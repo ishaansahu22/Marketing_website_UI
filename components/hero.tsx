@@ -32,14 +32,14 @@ export function Hero() {
                 select-none
                 w-full
                 text-center
-                scale-y-[1.6]
+                scale-y-[2.0] md:scale-y-[1.6]
                 origin-top
               "
               style={{
                 fontFamily: 'var(--font-display-black)',
                 fontWeight: 400,
                 color: '#3A1E14',
-                fontSize: 'clamp(3rem, 15vw, 25rem)', 
+                fontSize: 'clamp(1.5rem, 15vw, 25rem)', 
                 letterSpacing: '-0.02em',
               }}
             >
@@ -130,7 +130,7 @@ export function Hero() {
   style={{
     fontFamily: 'var(--font-boska)',
     color: '#5C4A43',
-    fontSize: 'clamp(1rem, 4.5vw, 7.5rem)', /* Exactly 30% of the title size */
+    fontSize: 'clamp(1.3rem, 4.5vw, 7.5rem)', /* Exactly 30% of the title size */
   }}
 >
   <span className="hidden md:block">

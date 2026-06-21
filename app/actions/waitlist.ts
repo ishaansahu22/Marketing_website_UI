@@ -9,23 +9,19 @@ export async function subscribeToWaitlist(email: string) {
   let contactSaved = false
   let emailSent = false
 
-  // Determine the user's rank before inserting
-  const currentCount = await getWaitlistCount();
+  // Determine rank and save to Supabase concurrently to cut response time in half
+  const [countResult, insertResult] = await Promise.all([
+    getWaitlistCount(),
+    supabase.from('waitlist').insert([{ email }])
+  ]);
+
+  const currentCount = countResult;
   const rank = currentCount + 1;
 
-  // 1. Always save to Supabase first (this is the critical path)
-  try {
-    const { error } = await supabase
-      .from('waitlist')
-      .insert([{ email }]);
-      
-    if (!error) {
-      contactSaved = true;
-    } else {
-      console.error('Failed to save to Supabase:', error);
-    }
-  } catch (supabaseError) {
-    console.error('Failed to save to Supabase:', supabaseError);
+  if (!insertResult.error) {
+    contactSaved = true;
+  } else {
+    console.error('Failed to save to Supabase:', insertResult.error);
   }
 
   // 2. Try to send the welcome email via Resend (optional, won't block success)
