@@ -95,7 +95,7 @@ export function SiteHeader() {
           )}
         </AnimatePresence>
 
-        {/* The Brick Studs (Only visible when collapsed into a brick) */}
+        {/* The Cute Face (Only visible when collapsed into a brick) */}
         <AnimatePresence mode="popLayout">
           {activeState === 'scrollingDown' && (
             <motion.div 
@@ -103,10 +103,9 @@ export function SiteHeader() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2, delay: 0.1 }}
-              className="flex gap-2 md:gap-3 items-center justify-center w-full"
+              className="flex items-center justify-center w-full text-white/80 text-xs md:text-sm font-bold tracking-[0.2em]"
             >
-              <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/60 shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]" />
-              <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/60 shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]" />
+              • ᴗ •
             </motion.div>
           )}
         </AnimatePresence>
