@@ -65,7 +65,7 @@ export function Hero() {
             
             {/* String Wrapper (Behind Text, z-20) */}
             <div 
-              className="absolute left-[81%] top-[35%] sm:top-[45%] md:top-[50%] z-20 pointer-events-none"
+              className="absolute left-[70%] sm:left-[81%] top-[85%] md:top-[90%] z-20 pointer-events-none scale-[0.75] sm:scale-100 origin-top"
               style={{
                 transformOrigin: 'top center',
                 animation: 'dropIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
@@ -85,7 +85,7 @@ export function Hero() {
 
             {/* Tag Wrapper (In Front of Text, z-40) */}
             <div 
-              className="absolute left-[81%] top-[35%] sm:top-[45%] md:top-[50%] z-40 pointer-events-none"
+              className="absolute left-[70%] sm:left-[81%] top-[85%] md:top-[90%] z-40 pointer-events-none scale-[0.75] sm:scale-100 origin-top"
               style={{
                 transformOrigin: 'top center',
                 animation: 'dropIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
@@ -120,7 +120,7 @@ export function Hero() {
           </div>
         <h2
   className="
-    mt-16
+    mt-24
     md:mt-48
     leading-[1.1]
     md:leading-[0.9]
