@@ -36,7 +36,7 @@ export function Hero() {
               style={{
                 fontFamily: "'Tanker', sans-serif",
                 fontWeight: 400,
-                color: '#59C749',
+                color: '#3A1E14',
                 fontSize: '24vw', 
               }}
             >
@@ -125,8 +125,8 @@ export function Hero() {
   "
   style={{
     fontFamily: 'var(--font-boska)',
-    color: '#47A83A',
-    fontSize: 'clamp(3.2rem, 6vw, 7rem)',
+    color: '#5C4A43',
+    fontSize: 'clamp(2rem, 4.5vw, 6rem)',
   }}
 >
   <span className="hidden md:block">
@@ -162,8 +162,8 @@ export function Hero() {
       hover:-translate-y-1
     "
     style={{
-      background: '#59C749',
-      borderColor: '#59C749',
+      background: '#E87C48',
+      borderColor: '#E87C48',
       color: '#FFFDF1',
       fontFamily: 'var(--font-sans)',
     }}
