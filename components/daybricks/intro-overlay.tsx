@@ -91,6 +91,7 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
                   color: '#3A1E14',
                   fontSize: 'clamp(1.5rem, 15vw, 25rem)', 
                   letterSpacing: '-0.02em',
+                  textShadow: '0 20px 40px rgba(58, 30, 20, 0.12)',
                 }}
               >
                 DAYBRICKS
