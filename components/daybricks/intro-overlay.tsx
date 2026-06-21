@@ -55,20 +55,20 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
           >
             {/* The Logo that stays opaque and flies away */}
             <motion.div
-              initial={{ scale: 0, opacity: 0, y: 50, rotate: -20, left: '50%', x: '-50%', top: '10vh' }}
+              initial={{ scale: 0, opacity: 0, rotate: -20, left: '50%', x: '-50%', top: '15vh', y: '-50%' }}
               animate={
                 phase === 'intro'
-                  ? { scale: 1, opacity: 1, y: 0, rotate: 0, left: '50%', x: '-50%', top: '10vh' }
-                  : { scale: 0.35, opacity: 1, y: 0, rotate: -90, left: '1.5rem', x: '0%', top: '1.5rem' }
+                  ? { scale: 1, opacity: 1, rotate: 0, left: '50%', x: '-50%', top: '15vh', y: '-50%' }
+                  : { scale: 0.7, opacity: 1, rotate: -360, left: '56px', x: '-50%', top: '56px', y: '-50%' }
               }
               transition={
                 phase === 'intro'
                   ? { type: 'spring', stiffness: 200, damping: 12, mass: 1.2, delay: 0.3 }
-                  : { duration: 1.0, ease: [0.76, 0, 0.24, 1] }
+                  : { duration: 1.0, ease: [0.34, 1.2, 0.64, 1] } // Slight bounce at the end to snap like a puzzle
               }
               className="fixed z-50 pointer-events-none"
             >
-              <Logo className="mb-4 scale-125 md:scale-150 drop-shadow-[0_15px_35px_rgba(18,167,152,0.3)]" />
+              <Logo className="scale-125 md:scale-150 drop-shadow-[0_15px_35px_rgba(18,167,152,0.3)]" />
             </motion.div>
 
             {/* DAYBRICKS Text that fades out with the background */}
