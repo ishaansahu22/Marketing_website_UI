@@ -121,6 +121,7 @@ export function Hero() {
   className="
     mt-16
     md:mt-32
+    ml-2 md:ml-[1.5vw]
     leading-[1.1]
     md:leading-[0.9]
     tracking-[-0.04em]
@@ -144,7 +145,7 @@ export function Hero() {
     brick by brick.
   </span>
 </h2>
-<div className="mt-6 md:mt-12 flex flex-col gap-4 sm:flex-row pb-8 md:pb-24 lg:pb-32 justify-start w-full">
+<div className="mt-6 md:mt-12 flex flex-col gap-4 sm:flex-row pb-8 md:pb-24 lg:pb-32 justify-start w-full ml-2 md:ml-[1.5vw]">
   <div>
   <a
     href="#waitlist"
