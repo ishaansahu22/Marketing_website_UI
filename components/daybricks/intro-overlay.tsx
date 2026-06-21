@@ -42,12 +42,12 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
           key="intro-overlay"
           initial={{ opacity: 1 }}
           animate={{ opacity: phase === 'exit' ? 0 : 1 }}
-          transition={{ duration: 0.8, ease: 'easeInOut' }}
+          transition={{ duration: 1.2, ease: 'easeInOut' }}
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[#FFFDF1]"
         >
           <motion.div
-            animate={{ scale: phase === 'exit' ? 20 : 1 }}
-            transition={{ duration: 0.9, ease: [0.65, 0, 0.35, 1] }}
+            animate={{ scale: phase === 'exit' ? 1 : 1 }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
             className="flex flex-col items-center justify-center"
           >
             {/* Logo Bounces In */}
@@ -83,12 +83,15 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
                   whitespace-nowrap
                   select-none
                   text-center
+                  scale-y-[2.0] md:scale-y-[1.6]
+                  origin-top
                 "
                 style={{
-                  fontFamily: "'Tanker', sans-serif",
+                  fontFamily: 'var(--font-display-black)',
                   fontWeight: 400,
-                  color: '#59C749',
-                  fontSize: 'clamp(4.5rem, 16vw, 12rem)', 
+                  color: '#3A1E14',
+                  fontSize: 'clamp(1.5rem, 15vw, 25rem)', 
+                  letterSpacing: '-0.02em',
                 }}
               >
                 DAYBRICKS
