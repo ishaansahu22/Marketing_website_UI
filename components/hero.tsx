@@ -32,14 +32,14 @@ export function Hero() {
                 select-none
                 w-full
                 text-center
+                scale-y-[1.15] md:scale-y-100
+                origin-bottom
               "
               style={{
-                fontFamily: "'Tanker', sans-serif",
-                fontWeight: 900,
+                fontFamily: 'var(--font-grotesk)',
+                fontWeight: 700,
                 color: '#3A1E14',
-                fontSize: 'clamp(5rem, 24vw, 20rem)', 
-                transform: 'scaleY(1.15)',
-                transformOrigin: 'bottom',
+                fontSize: 'clamp(3rem, 14vw, 12rem)', 
               }}
             >
               DAYBRICKS
@@ -128,7 +128,7 @@ export function Hero() {
   style={{
     fontFamily: 'var(--font-boska)',
     color: '#5C4A43',
-    fontSize: 'clamp(1.5rem, 7.2vw, 6rem)', /* Exactly 30% of the title size */
+    fontSize: 'clamp(0.9rem, 4.2vw, 3.6rem)', /* 30% of title size */
   }}
 >
   <span className="hidden md:block">
