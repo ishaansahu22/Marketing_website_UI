@@ -78,7 +78,7 @@ export function InteractiveBrickGrid() {
   const totalBricks = cols * rows
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#FFFDF1] py-12 flex flex-col items-center select-none cursor-crosshair">
+    <section id="features" className="relative w-full overflow-hidden bg-[#FFFDF1] py-12 flex flex-col items-center select-none cursor-crosshair">
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-[#FFFDF1] via-transparent to-[#FFFDF1] z-10" />
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#FFFDF1] via-transparent to-[#FFFDF1] z-10" />
       
