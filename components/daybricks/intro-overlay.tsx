@@ -31,18 +31,18 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
     // Lock scroll while the cinematic plays
     document.body.style.overflow = 'hidden'
 
-    // The whole intro is 3.2s total now to make it a little slower.
+    // The whole intro is 3.25s total now to make it a little slower.
     // At 2.4s, we start zooming everything towards the camera to wipe to the page.
     const exitTimer = setTimeout(() => {
       setPhase('exit')
     }, 2400)
     
-    // At 3.2s, we completely unmount the intro overlay
+    // At 3.25s, we completely unmount the intro overlay
     const doneTimer = setTimeout(() => {
       setPhase('done')
       document.body.style.overflow = ''
       onDoneRef.current()
-    }, 3200)
+    }, 3250)
 
     return () => {
       document.body.style.overflow = ''
@@ -64,7 +64,7 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
           <motion.div
             initial={{ opacity: 1 }}
             animate={{ opacity: phase === 'exit' ? 0 : 1 }}
-            transition={{ duration: 1.2, ease: 'easeInOut' }}
+            transition={{ duration: 0.8, ease: 'easeInOut' }}
             className="absolute inset-0 bg-[#FFFDF1] pointer-events-auto"
           />
 
@@ -82,7 +82,7 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
               transition={
                 phase === 'intro'
                   ? { type: 'spring', stiffness: 200, damping: 12, mass: 1.2, delay: 0.3 }
-                  : { duration: 1.0, ease: [0.34, 1.2, 0.64, 1] } // Slight bounce at the end to snap like a puzzle
+                  : { duration: 0.8, ease: [0.34, 1.2, 0.64, 1] } // Slight bounce at the end to snap like a puzzle
               }
               className="fixed z-50 pointer-events-none"
             >
@@ -102,7 +102,7 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
                 stiffness: 150,
                 damping: 12,
                 delay: phase === 'intro' ? 0.8 : 0,
-                duration: phase === 'intro' ? undefined : 1.2
+                duration: phase === 'intro' ? undefined : 0.8
               }}
               className="relative z-10"
             >
