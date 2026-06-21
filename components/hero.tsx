@@ -145,7 +145,7 @@ export function Hero() {
     brick by brick.
   </span>
 </h2>
-<div className="mt-8 md:mt-12 flex flex-col gap-4 sm:flex-row pb-16 md:pb-24 lg:pb-32">
+<div className="mt-4 md:mt-12 flex flex-col gap-4 sm:flex-row pb-16 md:pb-24 lg:pb-32">
   <div>
   <a
     href="#waitlist"
