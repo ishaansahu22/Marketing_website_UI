@@ -24,9 +24,10 @@ export async function subscribeToWaitlist(email: string) {
     console.error('Failed to save to Supabase:', insertResult.error);
   }
 
-  // 2. Try to send the welcome email via Resend (optional, won't block success)
-  if (process.env.RESEND_API_KEY) {
-    try {
+  // As long as the contact was saved, we consider it a success — return IMMEDIATELY
+  if (contactSaved) {
+    // Fire-and-forget: send the email in the background without blocking the response
+    if (process.env.RESEND_API_KEY) {
       const subject = rank <= 100 
         ? 'Welcome to the DayBricks Waitlist! 🎉' 
         : 'DayBricks Waitlist: You are on the list! 🚀';
@@ -55,26 +56,16 @@ export async function subscribeToWaitlist(email: string) {
           </div>
         `;
 
-      const { data, error } = await resend.emails.send({
+      // Do NOT await — let it run in the background
+      resend.emails.send({
         from: 'DayBricks <onboarding@resend.dev>',
         to: email,
         subject: subject,
         html: htmlContent
-      })
-
-      if (!error) {
-        emailSent = true
-      } else {
-        console.error('Resend Error:', error)
-      }
-    } catch (error) {
-      console.error('Resend send failed:', error)
+      }).catch(err => console.error('Background email send failed:', err));
     }
-  }
 
-  // As long as the contact was saved, we consider it a success
-  if (contactSaved) {
-    return { success: true, emailSent }
+    return { success: true, emailSent: true }
   }
 
   // If even the contact creation failed, return error
