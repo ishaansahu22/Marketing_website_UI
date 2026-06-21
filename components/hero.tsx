@@ -32,8 +32,8 @@ export function Hero() {
                 select-none
                 w-full
                 text-center
-                scale-y-[1.5]
-                origin-top
+                scale-y-[1.6]
+                origin-center
               "
               style={{
                 fontFamily: 'var(--font-display-black)',
@@ -120,8 +120,8 @@ export function Hero() {
           </div>
         <h2
   className="
-    mt-4
-    md:mt-24
+    mt-8
+    md:mt-32
     leading-[1.1]
     md:leading-[0.9]
     tracking-[-0.04em]
