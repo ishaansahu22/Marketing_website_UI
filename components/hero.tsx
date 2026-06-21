@@ -32,7 +32,7 @@ export function Hero() {
                 select-none
                 w-full
                 text-center
-                scale-y-[1.2]
+                scale-y-[1.5]
                 origin-top
               "
               style={{
