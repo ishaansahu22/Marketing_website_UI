@@ -37,7 +37,7 @@ export function Hero() {
                 fontFamily: "'Tanker', sans-serif",
                 fontWeight: 400,
                 color: '#3A1E14',
-                fontSize: '24vw', 
+                fontSize: 'clamp(5rem, 28vw, 20rem)', 
               }}
             >
               DAYBRICKS
@@ -126,7 +126,7 @@ export function Hero() {
   style={{
     fontFamily: 'var(--font-boska)',
     color: '#5C4A43',
-    fontSize: 'clamp(2rem, 4.5vw, 6rem)',
+    fontSize: 'clamp(1.5rem, 8.4vw, 6rem)', /* Exactly 30% of the title size */
   }}
 >
   <span className="hidden md:block">
