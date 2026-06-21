@@ -50,7 +50,6 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
             transition={{ duration: 1.2, ease: 'easeInOut' }}
             className="flex flex-col items-center relative"
           >
-            {/* Logo Bounces In (Absolutely positioned so it doesn't push the text down) */}
             <motion.div
               initial={{ scale: 0, opacity: 0, y: 50, rotate: -20 }}
               animate={{ scale: 1, opacity: 1, y: 0, rotate: 0 }}
@@ -61,7 +60,7 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
                 mass: 1.2,
                 delay: 0.3 
               }}
-              className="absolute -top-24 md:-top-32"
+              className="fixed top-[8vh] md:top-[12vh] left-1/2 -translate-x-1/2"
             >
               <Logo className="mb-4 scale-125 md:scale-150 drop-shadow-[0_15px_35px_rgba(18,167,152,0.3)]" />
             </motion.div>

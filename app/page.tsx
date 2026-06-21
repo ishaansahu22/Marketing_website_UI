@@ -8,9 +8,12 @@ import { IntroGate } from '@/components/daybricks/intro-gate'
 import { TaglineSection } from '@/components/tagline-section'
 import { InteractiveBrickGrid } from '@/components/interactive-brick-grid'
 
+import { SiteHeader } from '@/components/site-header'
+
 export default function Page() {
   return (
     <>
+      <SiteHeader />
       <IntroGate />
       <main>
         <Hero />
