@@ -62,7 +62,7 @@ export function Hero() {
             
             {/* String Wrapper (Behind Text, z-20) */}
             <div 
-              className="absolute left-[70%] sm:left-[81%] top-[50%] sm:top-[45%] md:top-[50%] z-20 pointer-events-none scale-[0.75] sm:scale-100 origin-top"
+              className="absolute left-[81%] top-[35%] sm:top-[45%] md:top-[50%] z-20 pointer-events-none"
               style={{
                 transformOrigin: 'top center',
                 animation: 'dropIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
@@ -82,7 +82,7 @@ export function Hero() {
 
             {/* Tag Wrapper (In Front of Text, z-40) */}
             <div 
-              className="absolute left-[70%] sm:left-[81%] top-[50%] sm:top-[45%] md:top-[50%] z-40 pointer-events-none scale-[0.75] sm:scale-100 origin-top"
+              className="absolute left-[81%] top-[35%] sm:top-[45%] md:top-[50%] z-40 pointer-events-none"
               style={{
                 transformOrigin: 'top center',
                 animation: 'dropIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
@@ -117,17 +117,16 @@ export function Hero() {
           </div>
         <h2
   className="
-    mt-4
+    mt-12
     md:mt-12
-    leading-[1.1]
-    md:leading-[0.9]
+    leading-[0.9]
     tracking-[-0.04em]
     max-w-none
   "
   style={{
     fontFamily: 'var(--font-boska)',
     color: '#5C4A43',
-    fontSize: 'clamp(1.75rem, 4.5vw, 6rem)',
+    fontSize: 'clamp(2rem, 4.5vw, 6rem)',
   }}
 >
   <span className="hidden md:block">
@@ -142,7 +141,7 @@ export function Hero() {
     brick by brick.
   </span>
 </h2>
-<div className="mt-6 md:mt-12 flex flex-col gap-4 sm:flex-row pb-16 md:pb-24 lg:pb-32">
+<div className="mt-8 md:mt-12 flex flex-col gap-4 sm:flex-row pb-16 md:pb-24 lg:pb-32">
   <div>
   <a
     href="#waitlist"
