@@ -40,16 +40,20 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
       {phase !== 'done' && (
         <motion.div
           key="intro-overlay"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: phase === 'exit' ? 0 : 1 }}
-          transition={{ duration: 1.2, ease: 'easeInOut' }}
-          className="fixed inset-0 z-[100] flex flex-col items-center pt-[25vh] overflow-hidden bg-[#FFFDF1]"
+          className="fixed inset-0 z-[100] flex flex-col items-center pt-[25vh] overflow-hidden pointer-events-none"
         >
+          {/* Background that fades out */}
           <motion.div
-            animate={{ scale: phase === 'exit' ? 1 : 1 }}
+            initial={{ opacity: 1 }}
+            animate={{ opacity: phase === 'exit' ? 0 : 1 }}
             transition={{ duration: 1.2, ease: 'easeInOut' }}
-            className="flex flex-col items-center relative"
+            className="absolute inset-0 bg-[#FFFDF1] pointer-events-auto"
+          />
+
+          <motion.div
+            className="flex flex-col items-center relative w-full h-full"
           >
+            {/* The Logo that stays opaque and flies away */}
             <motion.div
               initial={{ scale: 0, opacity: 0, y: 50, rotate: -20, left: '50%', x: '-50%', top: '10vh' }}
               animate={
@@ -67,16 +71,22 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
               <Logo className="mb-4 scale-125 md:scale-150 drop-shadow-[0_15px_35px_rgba(18,167,152,0.3)]" />
             </motion.div>
 
-            {/* DAYBRICKS Text Slams Down */}
+            {/* DAYBRICKS Text that fades out with the background */}
             <motion.div
               initial={{ scale: 3, opacity: 0, y: -40, filter: 'blur(10px)' }}
-              animate={{ scale: 1, opacity: 1, y: 0, filter: 'blur(0px)' }}
+              animate={
+                phase === 'intro'
+                  ? { scale: 1, opacity: 1, y: 0, filter: 'blur(0px)' }
+                  : { scale: 1, opacity: 0, y: 0, filter: 'blur(0px)' }
+              }
               transition={{ 
-                type: 'spring',
+                type: phase === 'intro' ? 'spring' : 'tween',
                 stiffness: 150,
                 damping: 12,
-                delay: 0.8 
+                delay: phase === 'intro' ? 0.8 : 0,
+                duration: phase === 'intro' ? undefined : 1.2
               }}
+              className="relative z-10"
             >
               <h1
                 className="
