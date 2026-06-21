@@ -29,7 +29,7 @@ export function SiteHeader() {
             ? "bg-transparent border-transparent gap-6 md:gap-10 rounded-full px-6 py-3 md:px-10 md:py-4 shadow-none" 
             : navState === 'scrollingUp'
             ? "bg-white/70 backdrop-blur-xl border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.08)] gap-6 md:gap-10 rounded-full px-6 py-3 md:px-10 md:py-4"
-            : "bg-[#FFFDF1]/80 backdrop-blur-2xl border-white/60 shadow-[0_15px_35px_rgb(0,0,0,0.1)] rounded-lg w-16 h-6 md:w-24 md:h-8"
+            : "bg-white/10 backdrop-blur-md backdrop-invert border-white/20 shadow-[0_15px_35px_rgb(0,0,0,0.2)] rounded-lg w-16 h-6 md:w-24 md:h-8"
         }`}
       >
         <AnimatePresence mode="popLayout">
