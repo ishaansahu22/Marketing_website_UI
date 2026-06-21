@@ -49,6 +49,7 @@ export function SiteHeader() {
         <AnimatePresence mode="popLayout">
           {activeState !== 'scrollingDown' && (
             <motion.a 
+              id="navbar-logo-container"
               layout 
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -56,7 +57,7 @@ export function SiteHeader() {
               transition={{ duration: 0.2 }}
               href="#top" 
               aria-label="DayBricks home" 
-              className="flex items-center"
+              className="flex items-center relative z-50"
             >
               <Logo className="scale-110 hover:saturate-150 transition-all duration-300 [&>svg]:size-8 md:[&>svg]:size-10" />
             </motion.a>

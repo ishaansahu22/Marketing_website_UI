@@ -14,15 +14,29 @@ export function IntroOverlay({ onDone }: { onDone: () => void }) {
 
   useEffect(() => {
     const updateTarget = () => {
-      if (window.innerWidth < 768) {
-        setTargetX('calc(-50% - 148px)') // Exact mobile logo X
-        setTargetY('44px') // Exact mobile logo Y
+      // Find the real navbar logo rendered in the background
+      const logoEl = document.getElementById('navbar-logo-container')
+      if (logoEl) {
+        const rect = logoEl.getBoundingClientRect()
+        // Calculate the exact pixel center of the real logo on the user's specific screen
+        const centerX = rect.left + rect.width / 2
+        const centerY = rect.top + rect.height / 2
+        setTargetX(`${centerX}px`)
+        setTargetY(`${centerY}px`)
       } else {
-        setTargetX('calc(-50% - 195px)') // Exact desktop logo X
-        setTargetY('68px') // Exact desktop logo Y
+        // Fallbacks just in case
+        if (window.innerWidth < 768) {
+          setTargetX('calc(-50% - 148px)')
+          setTargetY('44px')
+        } else {
+          setTargetX('calc(-50% - 195px)')
+          setTargetY('68px')
+        }
       }
     }
-    updateTarget()
+    
+    // Slight delay to ensure the DOM is painted and the header is rendered
+    setTimeout(updateTarget, 100)
     window.addEventListener('resize', updateTarget)
     return () => window.removeEventListener('resize', updateTarget)
   }, [])
