@@ -14,7 +14,7 @@ const rewards = [
   { emoji: '🎁', title: 'Exclusive Feature Testing Access' },
 ]
 
-import { subscribeToWaitlist } from '@/app/actions/waitlist'
+import { subscribeToWaitlist, getWaitlistCount } from '@/app/actions/waitlist'
 
 export function Waitlist() {
   const [email, setEmail] = useState('')
@@ -24,8 +24,9 @@ export function Waitlist() {
   const isInView = useInView(containerRef, { once: true, amount: 0.2 })
 
   useEffect(() => {
-    // The live simulation has been disabled.
-    // The tracker will remain at its current state until the real backend is hooked up.
+    if (isInView) {
+      getWaitlistCount().then(c => setCount(c))
+    }
   }, [isInView])
 
   async function onSubmit(e: React.FormEvent) {
@@ -44,7 +45,7 @@ export function Waitlist() {
     if (result.success) {
       setStatus('done')
       // When the user themselves signs up, immediately increment the counter
-      setCount(prev => Math.min(100, prev + 1))
+      setCount(prev => prev + 1)
     } else {
       setStatus('error')
     }
@@ -98,13 +99,13 @@ export function Waitlist() {
                 Early Access Progress
               </span>
               <span className="font-mono text-sm font-bold" style={{ color: '#0a1413' }}>
-                {count} Spots Claimed
+                {count > 100 ? '100+' : count} Spots Claimed
               </span>
             </div>
             <div className="relative h-4 w-full overflow-hidden rounded-full bg-black/5 shadow-inner border border-black/5">
               <motion.div
                 initial={{ width: '0%' }}
-                animate={{ width: `${count}%` }}
+                animate={{ width: `${Math.min(count, 100)}%` }}
                 transition={{ duration: 1, ease: 'easeOut' }}
                 className="relative h-full rounded-full"
                 style={{ background: 'linear-gradient(90deg, #12A798, #1ad0bd)' }}
@@ -123,11 +124,12 @@ export function Waitlist() {
                 <Check className="size-7" />
               </span>
               <p className="text-xl font-bold" style={{ fontFamily: 'var(--font-clash)', color: '#0a1413' }}>
-                You’re on the list!
+                {count > 100 ? 'Thank you for joining!' : 'You’re on the list!'}
               </p>
               <p className="text-sm" style={{ color: 'rgba(20, 40, 20, 0.65)' }}>
-                We’ll email <span className="font-semibold text-[#0a1413]">{email}</span> at
-                launch.
+                {count > 100 
+                  ? <>The first 100 spots are full, but we'll update <span className="font-semibold text-[#0a1413]">{email}</span> on the final launch!</>
+                  : <>We’ll email <span className="font-semibold text-[#0a1413]">{email}</span> your early access details.</>}
               </p>
             </div>
           ) : (
@@ -186,7 +188,7 @@ export function Waitlist() {
                   ))}
                 </div>
                 <p className="text-sm" style={{ color: 'rgba(20, 40, 20, 0.65)' }}>
-                  <strong style={{ color: '#0a1413' }}>{count}</strong> future explorers are building with DayBricks
+                  <strong style={{ color: '#0a1413' }}>{count > 100 ? '100+' : count}</strong> future explorers are building with DayBricks
                 </p>
               </div>
             </div>
