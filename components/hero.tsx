@@ -33,7 +33,7 @@ export function Hero() {
                 w-full
                 text-center
                 scale-y-[1.2]
-                origin-bottom
+                origin-top
               "
               style={{
                 fontFamily: 'var(--font-display-black)',
