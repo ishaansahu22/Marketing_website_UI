@@ -11,16 +11,19 @@ export function SiteHeader() {
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0
+    const diff = latest - previous
     
-    // Any scroll interaction resets the forced open state
-    if (isForcedOpen) setIsForcedOpen(false)
-
     if (latest <= 50) {
       setNavState('top')
-    } else if (latest > previous && latest > 150) {
+      setIsForcedOpen(false)
+    } else if (diff > 10 && latest > 150) {
+      // Scrolled down significantly
       setNavState('scrollingDown')
-    } else {
+      setIsForcedOpen(false)
+    } else if (diff < -10) {
+      // Scrolled up significantly
       setNavState('scrollingUp')
+      setIsForcedOpen(false)
     }
   })
 
