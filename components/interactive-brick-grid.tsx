@@ -6,7 +6,6 @@ export function InteractiveBrickGrid() {
   const [mounted, setMounted] = useState(false)
   const [cols, setCols] = useState(0)
   const [rows, setRows] = useState(0)
-  const [activeBricks, setActiveBricks] = useState<Set<number>>(new Set())
   const gridRef = useRef<HTMLDivElement>(null)
   const isTouching = useRef(false)
 
@@ -36,22 +35,17 @@ export function InteractiveBrickGrid() {
     return null
   }, [])
 
-  // Activate a brick by index
+  // Activate a brick by index using direct DOM manipulation for smooth performance
   const activateBrick = useCallback((index: number) => {
-    setActiveBricks(prev => {
-      if (prev.has(index)) return prev
-      const next = new Set(prev)
-      next.add(index)
-      // Auto-fade: remove after 1.8s
-      setTimeout(() => {
-        setActiveBricks(current => {
-          const updated = new Set(current)
-          updated.delete(index)
-          return updated
-        })
-      }, 1800)
-      return next
-    })
+    const el = document.querySelector(`[data-index="${index}"]`)
+    if (!el || el.classList.contains('paint-brick--active')) return
+
+    el.classList.add('paint-brick--active')
+    
+    // Auto-fade: remove after 1.8s
+    setTimeout(() => {
+      el.classList.remove('paint-brick--active')
+    }, 1800)
   }, [])
 
   // Touch handlers for mobile swipe painting
@@ -104,7 +98,7 @@ export function InteractiveBrickGrid() {
           <div 
             key={i} 
             data-index={i}
-            className={`paint-brick ${activeBricks.has(i) ? 'paint-brick--active' : ''}`}
+            className="paint-brick"
             onMouseEnter={() => handleMouseEnter(i)}
           />
         ))}
@@ -115,8 +109,8 @@ export function InteractiveBrickGrid() {
           width: 40px;
           height: 40px;
           border-radius: 6px;
-          border: 2px solid rgba(89, 199, 73, 0.35);
-          background-color: rgba(89, 199, 73, 0.04);
+          border: 2px solid rgba(232, 124, 72, 0.35); /* #E87C48 */
+          background-color: rgba(232, 124, 72, 0.04);
           transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
           position: relative;
           display: flex;
@@ -129,26 +123,26 @@ export function InteractiveBrickGrid() {
           width: 14px;
           height: 14px;
           border-radius: 50%;
-          border: 2px solid rgba(89, 199, 73, 0.35);
-          background-color: rgba(89, 199, 73, 0.04);
+          border: 2px solid rgba(232, 124, 72, 0.35);
+          background-color: rgba(232, 124, 72, 0.04);
           transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* Desktop hover */
         .paint-brick:hover,
         .paint-brick--active {
-          background-color: #59C749;
-          border-color: #59C749;
+          background-color: #E87C48;
+          border-color: #E87C48;
           transition: all 0s;
           transform: scale(1.15) translateY(-2px);
           z-index: 10;
-          box-shadow: 0 8px 16px -4px rgba(89, 199, 73, 0.5);
+          box-shadow: 0 8px 16px -4px rgba(232, 124, 72, 0.5);
         }
 
         .paint-brick:hover::after,
         .paint-brick--active::after {
-          background-color: #47A83A;
-          border-color: #47A83A;
+          background-color: #D66A36;
+          border-color: #D66A36;
           transition: all 0s;
           box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
