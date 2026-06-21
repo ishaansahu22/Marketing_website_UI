@@ -95,7 +95,7 @@ export function SiteHeader() {
           )}
         </AnimatePresence>
 
-        {/* The Cute Face (Only visible when collapsed into a brick) */}
+        {/* The Animated Route (Only visible when collapsed into a brick) */}
         <AnimatePresence mode="popLayout">
           {activeState === 'scrollingDown' && (
             <motion.div 
@@ -103,9 +103,34 @@ export function SiteHeader() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2, delay: 0.1 }}
-              className="flex items-center justify-center w-full text-white/80 text-xs md:text-sm font-bold tracking-[0.2em]"
+              className="flex items-center justify-center w-full text-white/80"
             >
-              • ᴗ •
+              <svg width="46" height="12" viewBox="0 0 46 12" className="overflow-visible">
+                {/* Left Dot */}
+                <circle cx="4" cy="6" r="2" fill="currentColor" />
+                {/* Right Dot */}
+                <circle cx="42" cy="6" r="2" fill="currentColor" />
+                
+                {/* Looping Curved Route */}
+                <motion.path
+                  d="M 8 6 Q 23 -2, 38 6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ 
+                    pathLength: [0, 1, 1],
+                    opacity: [0, 1, 0] 
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    times: [0, 0.7, 1]
+                  }}
+                />
+              </svg>
             </motion.div>
           )}
         </AnimatePresence>
