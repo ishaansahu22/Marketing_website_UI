@@ -7,10 +7,11 @@ export const metadata: Metadata = {
 }
 
 // Resolved server-side only — keys are never sent to the browser.
-const supabase = createClient(
-  process.env.Project_URL!,
-  process.env.Publishable_key!,
-)
+// Fallback values prevent Next.js build from crashing during module evaluation
+const supabaseUrl = process.env.Project_URL || "https://dummy.supabase.co"
+const supabaseKey = process.env.Publishable_key || "dummy"
+
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 export default async function InvitePage({
   params,
