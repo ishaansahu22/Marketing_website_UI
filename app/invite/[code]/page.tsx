@@ -1,6 +1,10 @@
 import { createClient } from "@supabase/supabase-js"
 import type { Metadata } from "next"
 
+// Force per-request rendering so the token is resolved live on every visit
+// (otherwise Next.js caches the first result and every link shows the same page).
+export const dynamic = "force-dynamic"
+
 export const metadata: Metadata = {
   title: "Join a trip on DayBricks",
   description: "You've been invited to plan a trip together on DayBricks.",
