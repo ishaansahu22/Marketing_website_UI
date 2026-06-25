@@ -8,8 +8,17 @@ export const metadata: Metadata = {
 
 // Resolved server-side only — keys are never sent to the browser.
 // Fallback values prevent Next.js build from crashing during module evaluation
-const supabaseUrl = process.env.Project_URL || "https://dummy.supabase.co"
-const supabaseKey = process.env.Publishable_key || "dummy"
+let rawUrl = process.env.Project_URL || "https://dummy.supabase.co"
+rawUrl = rawUrl.trim().replace(/['"]/g, '') // Remove spaces and accidental quotes
+
+try {
+  new URL(rawUrl) // Test if it's a valid URL
+} catch (e) {
+  rawUrl = "https://dummy.supabase.co"
+}
+
+const supabaseUrl = rawUrl
+const supabaseKey = process.env.Publishable_key?.trim() || "dummy"
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
