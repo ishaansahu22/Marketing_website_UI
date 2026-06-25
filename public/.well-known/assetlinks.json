@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.daybricks",
+    "sha256_cert_fingerprints": [
+      "8B:E2:B3:36:04:28:BE:2B:23:6D:AA:8D:0C:3A:C5:14:B9:89:47:E7:0E:4B:26:48:CA:3D:06:43:C9:34:27:49"
+    ]
+  }
+}]
