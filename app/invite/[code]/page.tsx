@@ -6,9 +6,10 @@ export const metadata: Metadata = {
   description: "You've been invited to plan a trip together on DayBricks.",
 }
 
+// Resolved server-side only — keys are never sent to the browser.
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  process.env.Project_URL!,
+  process.env.Publishable_key!,
 )
 
 export default async function InvitePage({
