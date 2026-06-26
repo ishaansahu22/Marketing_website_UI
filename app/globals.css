@@ -373,3 +373,71 @@ html.skip-intro #intro-gate {
 .hero-cta:hover {
   transform: translateY(-4px);
 }
+
+/* ── Legal page typography ──────────────────────────────────────────── */
+.legal-content h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0a1413;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+@media (min-width: 768px) {
+  .legal-content h1 {
+    font-size: 2.5rem;
+  }
+}
+.legal-content h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #0a1413;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(10, 20, 19, 0.06);
+}
+.legal-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0a1413;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.legal-content p {
+  color: rgba(10, 20, 19, 0.72);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+.legal-content ul,
+.legal-content ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.legal-content ul {
+  list-style-type: disc;
+}
+.legal-content ol {
+  list-style-type: decimal;
+}
+.legal-content li {
+  color: rgba(10, 20, 19, 0.72);
+  line-height: 1.75;
+  margin-bottom: 0.5rem;
+}
+.legal-content strong {
+  color: #0a1413;
+  font-weight: 600;
+}
+.legal-content em {
+  font-style: italic;
+}
+.legal-content a {
+  color: #12a798;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.legal-content a:hover {
+  text-decoration: underline;
+}
