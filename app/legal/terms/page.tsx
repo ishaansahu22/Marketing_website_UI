@@ -71,7 +71,7 @@ export default function TermsOfServicePage() {
       <p>
         The DayBricks platform, including its original features, functionality, and the aggregated
         community intelligence graph, are owned by DayBricks and are protected by international
-        copyright, trademark, patent, and other intellectual property laws.
+        copyright, trademark, and other intellectual property laws.
       </p>
 
       <h2>Limitation of Liability</h2>
